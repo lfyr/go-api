@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/lfyr/go-api/config"
-	"github.com/lfyr/go-api/databases/masterdb"
+	"github.com/lfyr/go-api/database/masterdb"
 )
 
 type User struct {
