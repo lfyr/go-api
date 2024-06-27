@@ -17,7 +17,7 @@ func Router() (router *gin.Engine) {
 	// 内部功能
 	adminRouter := router.Group("/admin")
 	{
-		UserRouter(adminRouter)
+		userRouter(adminRouter)
 	}
 	return
 }
