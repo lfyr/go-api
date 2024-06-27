@@ -73,3 +73,8 @@ func (this *User) Create(data *User) (err error) {
 	err = tx.Create(&data).Error
 	return
 }
+
+func (this *User) Update(Id int, user map[string]interface{}) (err error) {
+	err = masterdb.DB.Model(this).Where("id = ?", Id).Updates(&user).Error
+	return
+}
