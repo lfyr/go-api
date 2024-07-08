@@ -7,14 +7,14 @@ import (
 
 type User struct {
 	config.Model
-	UserName string
-	Password string
-	Email    string
-	Phone    string
-	Ip       string
-	Status   string
-	Token    string
-	Avatar   string
+	UserName string `json:"user_name"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Ip       string `json:"ip"`
+	Status   string `json:"status"`
+	Token    string `json:"token"`
+	Avatar   string `json:"avatar"`
 }
 
 func (u *User) TableName() string {

@@ -8,8 +8,8 @@ import (
 
 func Router() (router *gin.Engine) {
 	router = gin.New()
-	router.Use(middleware.Cors()) // 直接放行全部跨域请求
-
+	router.Use(middleware.Cors())           // 直接放行全部跨域请求
+	router.Use(middleware.CheckPrivilege()) // 权限校验
 	// 服务健康检测
 	router.GET("/admin/health", func(c *gin.Context) {
 		utils.Ok(c)

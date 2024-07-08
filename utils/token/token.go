@@ -1,4 +1,4 @@
-package service
+package token
 
 import (
 	"crypto"
@@ -129,4 +129,28 @@ func GetUid(c *gin.Context) int {
 
 func GetTokenFromHeader(c *gin.Context) string {
 	return c.Request.Header.Get("Authorization")
+}
+
+func GetUserInfo(c *gin.Context) model.User {
+	if user, exists := c.Get("user"); !exists {
+		return model.User{}
+	} else {
+		if value, ok := user.(model.User); ok {
+			return value
+		} else {
+			return model.User{}
+		}
+	}
+}
+
+func CheckPrivilege(c *gin.Context) error {
+
+	// 如果是超级管理员直接返回所有权限
+
+	// 获取地址
+	// path := c.Request.URL.Path
+
+	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
+
+	return nil
 }

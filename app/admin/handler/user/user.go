@@ -16,7 +16,7 @@ func GetUser(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	user := service.GetUserById(param.Id)
+	user := service.NewUserService().GetUserById(param.Id)
 	utils.OkWithData(c, user)
 	return
 }
@@ -34,7 +34,7 @@ func Add(c *gin.Context) {
 		Email:    param.Email,
 		Phone:    param.Phone,
 	}
-	err = service.Add(data)
+	err = service.NewUserService().Add(data)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return

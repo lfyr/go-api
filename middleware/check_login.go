@@ -2,23 +2,23 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/lfyr/go-api/app/web/service"
 	"github.com/lfyr/go-api/utils"
+	"github.com/lfyr/go-api/utils/token"
 )
 
 func ParseToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := getTokenByContext(c)
-		if token == "" {
+		tokens := getTokenByContext(c)
+		if tokens == "" {
 			c.Next()
 			return
 		}
-		c.Set("token", token)
-		user, _ := service.GetUserInfoByToken(token)
+		c.Set("token", tokens)
+		user, _ := token.GetUserInfoByToken(tokens)
 
 		c.Set("user_id", user.ID)
 		c.Set("user_name", user.UserName)
-		c.Set("token", token)
+		c.Set("user", user)
 		c.Next()
 		return
 	}
@@ -26,7 +26,7 @@ func ParseToken() gin.HandlerFunc {
 
 func LoginAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid := service.GetUid(c)
+		uid := token.GetUid(c)
 		if uid > 0 {
 			c.Next()
 			return
@@ -38,10 +38,10 @@ func LoginAuth() gin.HandlerFunc {
 	}
 }
 
-func getTokenByContext(c *gin.Context) (token string) {
-	token = service.GetTokenFromHeader(c)
-	if token == "" {
-		token, _ = c.Cookie("token")
+func getTokenByContext(c *gin.Context) (t string) {
+	t = token.GetTokenFromHeader(c)
+	if t == "" {
+		t, _ = c.Cookie("token")
 	}
 	return
 }
