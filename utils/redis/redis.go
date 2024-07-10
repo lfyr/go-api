@@ -26,7 +26,7 @@ func init() {
 	if err != nil {
 		logrus.Error("redis connect ping failed, err:", err.Error())
 	} else {
-		logrus.Infof("redis connect ping response:%+v err=%+v", pong)
+		logrus.Infof("redis connect ping response:%+v", pong)
 	}
 }
 

@@ -16,7 +16,7 @@ func ParseToken() gin.HandlerFunc {
 		c.Set("token", tokens)
 		user, _ := token.GetUserInfoByToken(tokens)
 
-		c.Set("user_id", user.ID)
+		c.Set("user_id", user.Id)
 		c.Set("user_name", user.UserName)
 		c.Set("user", user)
 		c.Next()

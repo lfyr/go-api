@@ -7,5 +7,6 @@ import (
 
 func userRouter(routers *gin.RouterGroup) {
 	routers.GET("/user/index", user.GetUser)
+	routers.GET("/user/list", user.GetUser)
 	routers.POST("/user/add", user.Add)
 }

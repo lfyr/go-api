@@ -8,8 +8,7 @@ import (
 
 func CheckPrivilege() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := token.CheckPrivilege(c)
-		if err != nil {
+		if !token.CheckPrivilege(c) {
 			utils.FailWithMessage(c, "暂无权限")
 			c.Abort()
 		}

@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/lfyr/go-api/app/admin/service"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils/redis"
 	"github.com/sirupsen/logrus"
@@ -29,7 +30,7 @@ func getUniquenessToken() (token string) {
 func setLoginInfoByToken(token string, user model.User) (err error) {
 
 	whereMap := map[string]interface{}{
-		"id =?": user.ID,
+		"id =?": user.Id,
 	}
 	userInfo := model.NewUser().First(whereMap)
 	if userInfo.Token != "" {
@@ -45,7 +46,7 @@ func setLoginInfoByToken(token string, user model.User) (err error) {
 	data := map[string]interface{}{
 		"token": token,
 	}
-	err = model.NewUser().Update(user.ID, data)
+	err = model.NewUser().Update(user.Id, data)
 	if err != nil {
 		return err
 	}
@@ -82,7 +83,7 @@ func GetRedisUserID(token string) (uid int) {
 	if err2 != nil {
 		return
 	}
-	uid = info.ID
+	uid = info.Id
 	return
 }
 
@@ -143,14 +144,31 @@ func GetUserInfo(c *gin.Context) model.User {
 	}
 }
 
-func CheckPrivilege(c *gin.Context) error {
+func CheckPrivilege(c *gin.Context) bool {
 
 	// 如果是超级管理员直接返回所有权限
+	userId := GetUid(c)
+	userId = 1
+	if GetUid(c) == 1 {
+		return true
+	}
+
+	// 获取用户信息
+	adminUser := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": userId}, []string{"Role"})
 
 	// 获取地址
-	// path := c.Request.URL.Path
+	path := c.Request.URL.Path
 
 	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
-
-	return nil
+	data := service.NewUserService().GetUserPri(adminUser.Id)
+	for _, role := range data.Role {
+		for _, privilege := range role.AppRolePrivilege {
+			for _, appPrivilege := range privilege.AppPrivilege {
+				if appPrivilege.ActionName == path {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }

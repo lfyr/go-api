@@ -18,3 +18,8 @@ func (this *UserService) Add(data model.User) (err error) {
 	err = model.NewUser().Create(&data)
 	return err
 }
+
+func (this *UserService) GetUserPri(adminId int) (data model.AppAdmin) {
+	data = model.NewAppAdmin().First(map[string]interface{}{"user_id=?": adminId}, []string{"Role.AppRolePrivilege.AppPrivilege"}) // , "Role.Pri", "Role.Pri.Pri"
+	return
+}
