@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/lfyr/go-api/app/admin/service"
+	"github.com/lfyr/go-api/app/admin/service/user"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils/redis"
 	"github.com/sirupsen/logrus"
@@ -160,7 +160,7 @@ func CheckPrivilege(c *gin.Context) bool {
 	path := c.Request.URL.Path
 
 	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
-	data := service.NewUserService().GetUserPri(adminUser.Id)
+	data := user.NewUserService().GetUserPri(adminUser.Id)
 	for _, role := range data.Role {
 		for _, privilege := range role.AppRolePrivilege {
 			for _, appPrivilege := range privilege.AppPrivilege {

@@ -1,4 +1,4 @@
-package service
+package user
 
 import (
 	"github.com/lfyr/go-api/model"

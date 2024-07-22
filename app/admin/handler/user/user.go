@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/lfyr/go-api/app/admin/service"
+	"github.com/lfyr/go-api/app/admin/service/user"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
 )
@@ -16,8 +16,8 @@ func GetUser(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	user := service.NewUserService().GetUserById(param.Id)
-	utils.OkWithData(c, user)
+	data := user.NewUserService().GetUserById(param.Id)
+	utils.OkWithData(c, data)
 	return
 }
 
@@ -34,7 +34,7 @@ func Add(c *gin.Context) {
 		Email:    param.Email,
 		Phone:    param.Phone,
 	}
-	err = service.NewUserService().Add(data)
+	err = user.NewUserService().Add(data)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
