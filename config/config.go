@@ -9,6 +9,7 @@ type Model struct {
 }
 
 type Server struct {
-	Redis Redis `mapstructure:"redis" json:"redis" yaml:"redis"`
-	Mysql Mysql `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	Redis  Redis  `mapstructure:"redis" json:"redis" yaml:"redis"`
+	Mysql  Mysql  `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	System System `mapstructure:"system" json:"system" yaml:"system"`
 }

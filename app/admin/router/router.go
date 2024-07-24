@@ -7,7 +7,7 @@ import (
 )
 
 func Router() (router *gin.Engine) {
-	router = gin.New()
+	router = utils.GetNewGinEngine(true)
 	router.Use(middleware.Cors()) // 直接放行全部跨域请求
 	router.Use(middleware.ParseToken())
 	router.Use(middleware.CheckPrivilege()) // 权限校验
