@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/lfyr/go-api/config"
 	"github.com/lfyr/go-api/database/masterdb"
+	"gorm.io/gorm"
 )
 
 type AppRolePrivilege struct {
@@ -63,13 +64,7 @@ func (this *AppRolePrivilege) Many(whereMap map[string]interface{}) (list []AppR
 	return
 }
 
-func (this *AppRolePrivilege) Create(data *AppRolePrivilege) (err error) {
-	tx := masterdb.DB.Model(this)
-	err = tx.Create(&data).Error
-	return
-}
-
-func (this *AppRolePrivilege) Update(Id int, user map[string]interface{}) (err error) {
-	err = masterdb.DB.Model(this).Where("id = ?", Id).Updates(&user).Error
+func (this *AppRolePrivilege) CreateInBatches(data []AppRolePrivilege, tx *gorm.DB) (err error) {
+	err = tx.Model(this).CreateInBatches(&data, 50).Error
 	return
 }

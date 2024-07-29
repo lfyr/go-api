@@ -71,3 +71,8 @@ func (this *AppRole) Update(Id int, user map[string]interface{}) (err error) {
 	err = masterdb.DB.Model(this).Where("id = ?", Id).Updates(&user).Error
 	return
 }
+
+func (this *AppRole) Delete(Id int) (err error) {
+	err = masterdb.DB.Model(this).Where("id = ?", Id).Delete(this).Error
+	return
+}

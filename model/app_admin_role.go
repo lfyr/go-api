@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/lfyr/go-api/config"
 	"github.com/lfyr/go-api/database/masterdb"
+	"gorm.io/gorm"
 )
 
 type AppAdminRole struct {
@@ -63,13 +64,17 @@ func (this *AppAdminRole) Many(whereMap map[string]interface{}) (list []AppAdmin
 	return
 }
 
-func (this *AppAdminRole) Create(data *AppAdminRole) (err error) {
-	tx := masterdb.DB.Model(this)
-	err = tx.Create(&data).Error
+func (this *AppAdminRole) CreateInBatches(data []AppAdminRole, tx *gorm.DB) (err error) {
+	err = tx.Model(this).CreateInBatches(&data, 50).Error
 	return
 }
 
 func (this *AppAdminRole) Update(Id int, user map[string]interface{}) (err error) {
 	err = masterdb.DB.Model(this).Where("id = ?", Id).Updates(&user).Error
+	return
+}
+
+func (this *AppAdminRole) DeleteByRoleId(roleId int, tx *gorm.DB) (err error) {
+	err = tx.Model(this).Where("role_id = ?", roleId).Delete(this).Error
 	return
 }
