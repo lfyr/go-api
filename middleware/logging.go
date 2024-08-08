@@ -45,7 +45,7 @@ func LoggerWithWriter(logBody bool) gin.HandlerFunc {
 			"path":       path,
 			"statusCode": statusCode,
 			"referer":    c.Request.Referer(),
-			"latency":    fmt.Sprintf("%13v", latency),
+			"latency":    latency,
 			"ip":         c.Request.Header.Get("X-Forwarded-For"),
 			"remoteAddr": c.Request.RemoteAddr,
 			"user-Agent": c.Request.Header.Get("User-Agent"),
