@@ -5,11 +5,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/lfyr/go-api/app/admin/service/user"
 	"github.com/lfyr/go-api/model"
+	"github.com/lfyr/go-api/utils"
 	"github.com/lfyr/go-api/utils/redis"
 	"github.com/sirupsen/logrus"
-	"math/rand"
 	"strconv"
 	"time"
 )
@@ -23,7 +22,7 @@ func SetToken(user model.User) (token string, err error) {
 }
 
 func getUniquenessToken() (token string) {
-	token = generatorToken(randomSalt())
+	token = generatorToken(utils.RandomSalt(6))
 	return
 }
 
@@ -60,22 +59,11 @@ func setLoginInfoByToken(token string, user model.User) (err error) {
 }
 
 func generatorToken(key string) (token string) {
-	key = key + strconv.Itoa(int(time.Now().Unix())) + randomSalt()
+	key = key + strconv.Itoa(int(time.Now().Unix())) + utils.RandomSalt(6)
 	md5 := crypto.MD5.New()
 	md5.Write([]byte(key))
 	token = hex.EncodeToString(md5.Sum(nil))
 	return
-}
-
-func randomSalt() string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyz"
-	bytes := []byte(str)
-	result := []byte{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < 6; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
-	}
-	return string(result)
 }
 
 func GetRedisUserID(token string) (uid int) {
@@ -142,33 +130,4 @@ func GetUserInfo(c *gin.Context) model.User {
 			return model.User{}
 		}
 	}
-}
-
-func CheckPrivilege(c *gin.Context) bool {
-
-	// 如果是超级管理员直接返回所有权限
-	userId := GetUid(c)
-	userId = 1
-	if GetUid(c) == 1 {
-		return true
-	}
-
-	// 获取用户信息
-	adminUser := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": userId}, []string{"Role"})
-
-	// 获取地址
-	path := c.Request.URL.Path
-
-	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
-	data := user.NewUserService().GetUserPri(adminUser.Id)
-	for _, role := range data.Role {
-		for _, privilege := range role.AppRolePrivilege {
-			for _, appPrivilege := range privilege.AppPrivilege {
-				if appPrivilege.ActionName == path {
-					return true
-				}
-			}
-		}
-	}
-	return false
 }

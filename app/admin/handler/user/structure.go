@@ -10,3 +10,8 @@ type AddUserReq struct {
 type GetUserReq struct {
 	Id int `form:"id" binding:"required"`
 }
+
+type LoginReq struct {
+	Phone    string `json:"phone" binding:"required"`
+	Password string `json:"password"  binding:"required"`
+}

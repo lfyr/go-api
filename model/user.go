@@ -15,9 +15,10 @@ type User struct {
 	Status   string `json:"status"`
 	Token    string `json:"token"`
 	Avatar   string `json:"avatar"`
+	Salt     string `json:"salt"`
 }
 
-func (u *User) TableName() string {
+func (u User) TableName() string {
 	return "user"
 }
 
@@ -46,14 +47,14 @@ func (this *User) List(whereMap map[string]interface{}, fieldSlice []string, pag
 	return
 }
 
-func (this *User) First(whereMap map[string]interface{}) (nodeVisitCall User) {
+func (this *User) First(whereMap map[string]interface{}) (user User) {
 	tx := masterdb.DB.Model(this)
 	if len(whereMap) > 0 {
 		for k, v := range whereMap {
 			tx = tx.Where(k, v)
 		}
 	}
-	tx.Order("id desc").First(&nodeVisitCall)
+	tx.Order("id desc").First(&user)
 	return
 }
 
