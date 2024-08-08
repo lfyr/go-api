@@ -17,7 +17,6 @@ func Router() (router *gin.Engine) {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 	router = gin.New()
-	router.Use(middleware.LoggerWithWriter(true), middleware.Recovery())
 	router.Use(middleware.Cors()) // 直接放行全部跨域请求
 
 	// 服务健康检测
@@ -26,6 +25,7 @@ func Router() (router *gin.Engine) {
 	})
 	router.Use(middleware.ParseToken())
 	router.Use(middleware.CheckPrivilege()) // 权限校验
+	router.Use(middleware.LoggerWithWriter(true), middleware.Recovery())
 
 	// 内部功能
 	adminRouter := router.Group("/admin")

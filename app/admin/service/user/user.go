@@ -39,7 +39,7 @@ func (this *UserService) Login(phone, password string) (loginReq LoginReq, err e
 				if err != nil {
 					return loginReq, err
 				}
-				loginReq.Token = tk
+				loginReq.User.Token = tk
 				return loginReq, nil
 			}
 			return loginReq, errors.New("账户或密码不正确")

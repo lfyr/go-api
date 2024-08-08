@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lfyr/go-api/utils/token"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -22,18 +23,20 @@ var (
 // 日志中间件
 //是否需要打印body
 func LoggerWithWriter(logBody bool) gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 		start := time.Now()
 		path := c.Request.URL.Path
 		raw := c.Request.URL.RawQuery
-		c.Next()
 		end := time.Now()
 		latency := end.Sub(start)
 		statusCode, exit := c.Get("statusCode")
 		if !exit {
 			statusCode = c.Writer.Status()
 		}
-		//uid := utils.GetUid(c)
+
+		uid := token.GetUid(c)
+
 		if raw != "" {
 			path = path + "?" + raw
 		}
@@ -46,9 +49,8 @@ func LoggerWithWriter(logBody bool) gin.HandlerFunc {
 			"ip":         c.Request.Header.Get("X-Forwarded-For"),
 			"remoteAddr": c.Request.RemoteAddr,
 			"user-Agent": c.Request.Header.Get("User-Agent"),
-			//"uid":        uid,
-			//"token":      getTokenByContext(c),
-			//"loginType":  gin_utils.GetLoginType(c),
+			"uid":        uid,
+			"token":      getTokenByContext(c),
 		}
 		if logBody {
 			body, err := ioutil.ReadAll(c.Request.Body)

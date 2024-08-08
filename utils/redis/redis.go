@@ -33,7 +33,7 @@ func init() {
 func NewDefaultRedisStore(expiration time.Duration) *RedisStore {
 	return &RedisStore{
 		Expiration: time.Second * expiration,
-		PreKey:     "APPSTORE_",
+		PreKey:     "APP_",
 	}
 }
 
