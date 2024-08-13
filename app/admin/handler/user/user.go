@@ -8,7 +8,31 @@ import (
 	"github.com/lfyr/go-api/utils"
 )
 
-func GetUser(c *gin.Context) {
+type User struct{}
+
+func NewUserRoute() *User {
+	return &User{}
+}
+
+func (this *User) Login(c *gin.Context) {
+	param := LoginReq{}
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+
+	// 登陆逻辑
+	u, err := user.NewUserService().Login(param.Phone, param.Password)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithData(c, u)
+	return
+}
+
+func (this *User) List(c *gin.Context) {
 	param := GetUserReq{}
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
@@ -21,7 +45,7 @@ func GetUser(c *gin.Context) {
 	return
 }
 
-func Add(c *gin.Context) {
+func (this *User) Add(c *gin.Context) {
 	param := AddUserReq{}
 	err := c.ShouldBindJSON(&param)
 	if err != nil {

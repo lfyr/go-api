@@ -7,12 +7,19 @@ import (
 )
 
 func userRouter(routers *gin.RouterGroup) {
-	routers.POST("/login", user.Login)
+
+	userApi := user.NewUserRoute()
+	routers.POST("/login", userApi.Login)
 	userRouters := routers.Group("user", middleware.LoginAuth())
 	{
-		userRouters.GET("/index", user.GetUser)
-		userRouters.GET("/list", user.GetUser)
-		userRouters.POST("/add", user.Add)
+		userRouters.GET("/list", userApi.List)
+		userRouters.POST("/add", userApi.Add)
 	}
 
+	roleRouters := routers.Group("role", middleware.LoginAuth())
+	roleApi := user.NewRoleRoute()
+	{
+		roleRouters.GET("/list", roleApi.List)
+		roleRouters.POST("/add", roleApi.Add)
+	}
 }

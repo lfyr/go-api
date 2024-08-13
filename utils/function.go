@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
@@ -33,17 +32,12 @@ func RandomSalt(num int) string {
 	return string(result)
 }
 
-func CheckJsonParam(c *gin.Context, param interface{}) (err error) {
+func CheckJsonParam(c *gin.Context) {
 	data, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		return err
-	}
-	if len(data) == 0 {
-		err = errors.New("参数错误")
+		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println(param)
-	err = c.ShouldBindJSON(&param)
-	fmt.Println("CheckJsonParam", err)
+	fmt.Println(len(data))
 	return
 }

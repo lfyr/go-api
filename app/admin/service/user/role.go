@@ -7,6 +7,15 @@ import (
 
 type RoleService struct{}
 
+func NewRoleService() *RoleService {
+	return &RoleService{}
+}
+
+func (r *RoleService) List(whereMap map[string]interface{}, fieldSlice []string, page, size int, withSlice []string) (list []model.AppRole, count int64) {
+	list, count = model.NewAppRole().List(whereMap, fieldSlice, page, size, withSlice)
+	return
+}
+
 func (r *RoleService) Add(data model.AppRole) (err error) {
 	err = model.NewAppRole().Create(&data)
 	return
