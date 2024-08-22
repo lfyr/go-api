@@ -9,11 +9,12 @@ import (
 func userRouter(routers *gin.RouterGroup) {
 
 	userApi := user.NewUserRoute()
-	routers.POST("/login", userApi.Login)
+	routers.POST("/user/login", userApi.Login)
 	userRouters := routers.Group("user", middleware.LoginAuth())
 	{
-		userRouters.GET("/list", userApi.List)
 		userRouters.POST("/add", userApi.Add)
+		userRouters.GET("/info", userApi.Info)
+		userRouters.POST("/logout", userApi.Logout)
 	}
 
 	roleRouters := routers.Group("role", middleware.LoginAuth())

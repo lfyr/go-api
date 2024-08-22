@@ -33,7 +33,7 @@ func checkPrivilege(c *gin.Context) bool {
 
 	// 获取地址
 	path := c.Request.URL.Path
-	if path == "/admin/login" || path == "/admin/logout" {
+	if path == "/admin/user/login" || path == "/admin/user/logout" {
 		return true
 	}
 

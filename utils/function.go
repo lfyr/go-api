@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"time"
+	"unicode"
 )
 
 func HashPassword(password, salt string) string {
@@ -40,4 +41,19 @@ func CheckJsonParam(c *gin.Context) {
 	}
 	fmt.Println(len(data))
 	return
+}
+
+func IsPhoneNumber(phoneNumber string) bool {
+	if len(phoneNumber) != 11 {
+		return false
+	}
+	if phoneNumber[0] != '1' {
+		return false
+	}
+	for _, r := range phoneNumber[1:] {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
 }

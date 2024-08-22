@@ -27,8 +27,9 @@ func (this *UserService) GetUserPri(adminId int) (data model.AppAdmin) {
 	return
 }
 
-func (this *UserService) Login(phone, password string) (loginReq LoginReq, err error) {
-	user := model.NewUser().First(map[string]interface{}{"phone = ?": phone})
+func (this *UserService) Login(userName, password string) (loginReq LoginReq, err error) {
+	whereMap := getUserNameWhereMap(userName)
+	user := model.NewUser().First(whereMap)
 	if user.Id > 0 {
 		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id}, []string{""})
 		if admin.Id > 0 {
@@ -40,6 +41,7 @@ func (this *UserService) Login(phone, password string) (loginReq LoginReq, err e
 					return loginReq, err
 				}
 				loginReq.User.Token = tk
+				loginReq.Token = tk
 				return loginReq, nil
 			}
 			return loginReq, errors.New("账户或密码不正确")
@@ -47,4 +49,11 @@ func (this *UserService) Login(phone, password string) (loginReq LoginReq, err e
 		return loginReq, errors.New("用户无权限")
 	}
 	return loginReq, errors.New("未找到该用户")
+}
+
+func getUserNameWhereMap(userName string) map[string]interface{} {
+	if utils.IsPhoneNumber(userName) {
+		return map[string]interface{}{"phone = ?": userName}
+	}
+	return map[string]interface{}{"user_name = ?": userName}
 }

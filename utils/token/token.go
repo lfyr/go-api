@@ -131,3 +131,21 @@ func GetUserInfo(c *gin.Context) model.User {
 		}
 	}
 }
+
+func DelRedisToken(id int, token string) (err error) {
+	client := redis.NewDefaultRedisStore(sevenDaySecond)
+	err = client.Del(token)
+	if err != nil {
+		logrus.Error("DelRedisToken", err.Error())
+		return
+	}
+	data := map[string]interface{}{
+		"token": "",
+	}
+	err = model.NewUser().Update(id, data)
+	if err != nil {
+		logrus.Error("DelToken", err.Error())
+		return
+	}
+	return
+}

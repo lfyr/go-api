@@ -1,11 +1,11 @@
 package user
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lfyr/go-api/app/admin/service/user"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
+	"github.com/lfyr/go-api/utils/token"
 )
 
 type User struct{}
@@ -23,7 +23,7 @@ func (this *User) Login(c *gin.Context) {
 	}
 
 	// 登陆逻辑
-	u, err := user.NewUserService().Login(param.Phone, param.Password)
+	u, err := user.NewUserService().Login(param.UserName, param.Password)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
@@ -32,16 +32,22 @@ func (this *User) Login(c *gin.Context) {
 	return
 }
 
-func (this *User) List(c *gin.Context) {
-	param := GetUserReq{}
-	err := c.ShouldBindQuery(&param)
+func (this *User) Info(c *gin.Context) {
+	userId := token.GetUid(c)
+	data := user.NewUserService().GetUserById(userId)
+	utils.OkWithData(c, data)
+	return
+}
+
+func (this *User) Logout(c *gin.Context) {
+	id := token.GetUid(c)
+	tk := token.GetTokenFromHeader(c)
+	err := token.DelRedisToken(id, tk)
 	if err != nil {
-		fmt.Println(err)
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	data := user.NewUserService().GetUserById(param.Id)
-	utils.OkWithData(c, data)
+	utils.Ok(c)
 	return
 }
 
