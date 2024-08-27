@@ -1,12 +1,12 @@
 package model
 
 import (
-	"github.com/lfyr/go-api/config"
+	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/database/masterdb"
 )
 
 type AppRole struct {
-	config.Model
+	global.Model
 	RoleName string `json:"role_name"` // 角色名称
 }
 

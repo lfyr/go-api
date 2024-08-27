@@ -31,6 +31,8 @@ func Router() (router *gin.Engine) {
 	adminRouter := router.Group("/admin")
 	{
 		userRouter(adminRouter)
+		productRouter(adminRouter)
+		commonRouter(adminRouter)
 	}
 	return
 }

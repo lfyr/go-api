@@ -1,13 +1,13 @@
 package model
 
 import (
-	"github.com/lfyr/go-api/config"
+	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/database/masterdb"
 	"gorm.io/gorm"
 )
 
 type AppRolePrivilege struct {
-	config.Model
+	global.Model
 	PriId        int            `json:"pri_id"`
 	RoleId       int            `json:"role_id"`
 	AppPrivilege []AppPrivilege `gorm:"foreignKey:Id;references:PriId"`

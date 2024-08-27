@@ -23,7 +23,6 @@ func checkPrivilege(c *gin.Context) bool {
 
 	// 如果是超级管理员直接返回所有权限
 	userId := token.GetUid(c)
-	userId = 1
 	if token.GetUid(c) == 1 {
 		return true
 	}

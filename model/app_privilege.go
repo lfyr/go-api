@@ -1,12 +1,12 @@
 package model
 
 import (
-	"github.com/lfyr/go-api/config"
+	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/database/masterdb"
 )
 
 type AppPrivilege struct {
-	config.Model
+	global.Model
 	PriName    string `json:"pri_name"`
 	ActionName string `json:"action_name"`
 	ParentId   int    `json:"parent_id"`

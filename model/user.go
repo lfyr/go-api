@@ -1,12 +1,12 @@
 package model
 
 import (
-	"github.com/lfyr/go-api/config"
+	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/database/masterdb"
 )
 
 type User struct {
-	config.Model
+	global.Model
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	Email    string `json:"email"`
