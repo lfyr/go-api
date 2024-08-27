@@ -15,4 +15,7 @@ type (
 		BrandName string `json:"brandName" form:"brandName" binding:"required"`
 		Logo      string `json:"logo" form:"logo"`
 	}
+	DelBrandReq struct {
+		Id int `json:"id" form:"id" binding:"required"`
+	}
 )

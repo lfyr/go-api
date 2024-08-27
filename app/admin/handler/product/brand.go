@@ -6,6 +6,7 @@ import (
 	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
+	"strconv"
 )
 
 type Brand struct{}
@@ -73,5 +74,26 @@ func (this *Brand) Update(c *gin.Context) {
 		return
 	}
 	utils.OkWithMessage(c, "更新成功")
+	return
+}
+
+func (this *Brand) Del(c *gin.Context) {
+	id := c.Query("id")
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	data := model.AppBrand{
+		Model: global.Model{
+			Id: idInt,
+		},
+	}
+	err = product.NewBrandService().Delete(data)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithMessage(c, "删除成功")
 	return
 }
