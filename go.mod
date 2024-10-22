@@ -10,9 +10,6 @@ require (
 	github.com/spf13/viper v1.16.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.10
-)
-
-require (
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
