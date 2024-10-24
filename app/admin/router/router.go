@@ -24,7 +24,6 @@ func Router() (router *gin.Engine) {
 		utils.Ok(c)
 	})
 	router.Use(middleware.ParseToken())
-	router.Use(middleware.CheckPrivilege()) // 权限校验
 	router.Use(middleware.LoggerWithWriter(true), middleware.Recovery())
 
 	// 内部功能

@@ -21,7 +21,7 @@ func (r *RoleService) Add(data model.AppRole) (err error) {
 	return
 }
 
-func (r *RoleService) UpData(data model.AppRole) (err error) {
+func (r *RoleService) Update(data model.AppRole) (err error) {
 	upData := map[string]interface{}{
 		"role_name": data.RoleName,
 	}
@@ -29,14 +29,19 @@ func (r *RoleService) UpData(data model.AppRole) (err error) {
 	return
 }
 
-func (r *RoleService) delData(id int) (err error) {
+func (r *RoleService) Del(id int) (err error) {
 	err = model.NewAppRole().Delete(id)
 	return
 }
 
-func (r *RoleService) AddAdminRole(roleId int, data []model.AppAdminRole) (err error) {
+func (r *RoleService) FirstAdminRole(whereMap map[string]interface{}) (data model.AppAdminRole) {
+	data = model.NewAppAdminRole().First(whereMap)
+	return
+}
+
+func (r *RoleService) AddAdminRole(data []model.AppAdminRole) (err error) {
 	tx := masterdb.DB.Begin()
-	err = model.NewAppAdminRole().DeleteByRoleId(roleId, tx)
+	err = model.NewAppAdminRole().DeleteByAdminId(data[0].AdminId, tx)
 	if err != nil {
 		tx.Rollback()
 		return

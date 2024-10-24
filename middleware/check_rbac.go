@@ -3,7 +3,6 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lfyr/go-api/app/admin/service/user"
-	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
 	"github.com/lfyr/go-api/utils/token"
 )
@@ -28,7 +27,7 @@ func checkPrivilege(c *gin.Context) bool {
 	}
 
 	// 获取用户信息
-	adminUser := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": userId}, []string{"Role"})
+	//adminUser := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": userId}, []string{"Role"})
 
 	// 获取地址
 	path := c.Request.URL.Path
@@ -37,7 +36,7 @@ func checkPrivilege(c *gin.Context) bool {
 	}
 
 	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
-	data := user.NewUserService().GetUserPri(adminUser.Id)
+	data := user.NewUserService().GetUserById(userId, []string{"Role.AppRolePrivilege.AppPrivilege"})
 	for _, role := range data.Role {
 		for _, privilege := range role.AppRolePrivilege {
 			for _, appPrivilege := range privilege.AppPrivilege {

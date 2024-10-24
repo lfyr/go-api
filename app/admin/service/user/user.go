@@ -12,8 +12,14 @@ type UserService struct{}
 func NewUserService() *UserService {
 	return &UserService{}
 }
-func (this *UserService) GetUserById(id int) (user model.User) {
-	user = model.NewUser().First(map[string]interface{}{"id": id})
+
+func (this *UserService) List(whereMap map[string]interface{}, fieldSlice []string, page int, size int, withSlice []string) (list []model.User, count int64) {
+	list, count = model.NewUser().List(whereMap, fieldSlice, page, size, withSlice)
+	return
+}
+
+func (this *UserService) GetUserById(id int, withSlice []string) (user model.User) {
+	user = model.NewUser().First(map[string]interface{}{"id": id}, withSlice)
 	return
 }
 
@@ -22,19 +28,13 @@ func (this *UserService) Add(data model.User) (err error) {
 	return err
 }
 
-func (this *UserService) GetUserPri(adminId int) (data model.AppAdmin) {
-	data = model.NewAppAdmin().First(map[string]interface{}{"user_id=?": adminId}, []string{"Role.AppRolePrivilege.AppPrivilege"}) // , "Role.Pri", "Role.Pri.Pri"
-	return
-}
-
 func (this *UserService) Login(userName, password string) (loginReq LoginReq, err error) {
 	whereMap := getUserNameWhereMap(userName)
-	user := model.NewUser().First(whereMap)
+	user := model.NewUser().First(whereMap, []string{})
 	if user.Id > 0 {
-		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id}, []string{""})
+		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id})
 		if admin.Id > 0 {
 			loginReq.User = user
-			loginReq.AdminId = admin.Id
 			if user.Password == utils.HashPassword(password, user.Salt) {
 				tk, err := token.SetToken(user)
 				if err != nil {

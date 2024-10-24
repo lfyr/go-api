@@ -7,9 +7,8 @@ import (
 
 type AppAdmin struct {
 	global.Model
-	UserId int            `json:"user_id"`
-	IsUse  int            `json:"is_use"`
-	Role   []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
+	UserId int `json:"user_id"`
+	IsUse  int `json:"is_use"`
 }
 
 func (u *AppAdmin) TableName() string {
@@ -41,16 +40,11 @@ func (this *AppAdmin) List(whereMap map[string]interface{}, fieldSlice []string,
 	return
 }
 
-func (this *AppAdmin) First(whereMap map[string]interface{}, withSlice []string) (detail AppAdmin) {
+func (this *AppAdmin) First(whereMap map[string]interface{}) (detail AppAdmin) {
 	tx := masterdb.DB.Model(this)
 	if len(whereMap) > 0 {
 		for k, v := range whereMap {
 			tx = tx.Where(k, v)
-		}
-	}
-	if len(withSlice) > 0 {
-		for _, v := range withSlice {
-			tx = tx.Preload(v)
 		}
 	}
 	tx.Order("id desc").First(&detail)

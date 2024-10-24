@@ -10,17 +10,34 @@ func userRouter(routers *gin.RouterGroup) {
 
 	userApi := user.NewUserRoute()
 	routers.POST("/user/login", userApi.Login)
-	userRouters := routers.Group("user", middleware.LoginAuth())
+	adminRouter := routers.Group("", middleware.LoginAuth(), middleware.CheckPrivilege())
 	{
-		userRouters.POST("/add", userApi.Add)
-		userRouters.GET("/info", userApi.Info)
-		userRouters.POST("/logout", userApi.Logout)
+		userRouters := adminRouter.Group("user")
+		{
+			userRouters.GET("/list", userApi.List)
+			userRouters.POST("/add", userApi.Add)
+			userRouters.GET("/info", userApi.Info)
+			userRouters.POST("/logout", userApi.Logout)
+		}
+
+		roleRouters := adminRouter.Group("role")
+		roleApi := user.NewRoleRoute()
+		{
+			roleRouters.GET("/list", roleApi.List)
+			roleRouters.POST("/add", roleApi.Add)
+			roleRouters.POST("/update", roleApi.Update)
+			roleRouters.GET("/delete", roleApi.Del)
+		}
+
+		privilegeRouters := adminRouter.Group("privilege")
+		privilegeApi := user.NewRoleRoute()
+		{
+			privilegeRouters.GET("/list", privilegeApi.List)
+			privilegeRouters.POST("/add", privilegeApi.Add)
+			privilegeRouters.POST("/update", privilegeApi.Update)
+			privilegeRouters.GET("/delete", privilegeApi.Del)
+		}
+
 	}
 
-	roleRouters := routers.Group("role", middleware.LoginAuth())
-	roleApi := user.NewRoleRoute()
-	{
-		roleRouters.GET("/list", roleApi.List)
-		roleRouters.POST("/add", roleApi.Add)
-	}
 }

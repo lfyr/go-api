@@ -31,7 +31,7 @@ func setLoginInfoByToken(token string, user model.User) (err error) {
 	whereMap := map[string]interface{}{
 		"id =?": user.Id,
 	}
-	userInfo := model.NewUser().First(whereMap)
+	userInfo := model.NewUser().First(whereMap, []string{})
 	if userInfo.Token != "" {
 		// 删除上一次在该类型登录的 Token
 		client := redis.NewDefaultRedisStore(0)

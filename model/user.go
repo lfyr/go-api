@@ -7,15 +7,17 @@ import (
 
 type User struct {
 	global.Model
-	UserName string `json:"user_name"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Ip       string `json:"ip"`
-	Status   string `json:"status"`
-	Token    string `json:"token"`
-	Avatar   string `json:"avatar"`
-	Salt     string `json:"salt"`
+	UserName string         `json:"user_name"`
+	Password string         `json:"password"`
+	Email    string         `json:"email"`
+	Phone    string         `json:"phone"`
+	Ip       string         `json:"ip"`
+	Status   string         `json:"status"`
+	Token    string         `json:"token"`
+	Avatar   string         `json:"avatar"`
+	Salt     string         `json:"salt"`
+	Role     []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
+	Admin    []AppAdmin     `json:"admin" gorm:"foreignKey:UserId;references:Id"`
 }
 
 func (u User) TableName() string {
@@ -47,11 +49,16 @@ func (this *User) List(whereMap map[string]interface{}, fieldSlice []string, pag
 	return
 }
 
-func (this *User) First(whereMap map[string]interface{}) (user User) {
+func (this *User) First(whereMap map[string]interface{}, withSlice []string) (user User) {
 	tx := masterdb.DB.Model(this)
 	if len(whereMap) > 0 {
 		for k, v := range whereMap {
 			tx = tx.Where(k, v)
+		}
+	}
+	if len(withSlice) > 0 {
+		for _, v := range withSlice {
+			tx = tx.Preload(v)
 		}
 	}
 	tx.Order("id desc").First(&user)

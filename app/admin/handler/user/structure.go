@@ -9,7 +9,8 @@ type (
 		Phone    string `json:"phone"  binding:"required"`
 	}
 	GetUserReq struct {
-		Id int `form:"id" binding:"required"`
+		Page     int `form:"page" binding:"required"`
+		PageSize int `form:"page_size" binding:"required"`
 	}
 
 	LoginReq struct {
@@ -24,7 +25,7 @@ type (
 		RoleName string `json:"role_name" binding:"required"`
 	}
 
-	UpRoleReq struct {
+	UpdateRoleReq struct {
 		Id       int    `form:"id" binding:"required"`
 		RoleName string `form:"id" json:"role_name" binding:"required"`
 	}
@@ -36,5 +37,10 @@ type (
 
 	DelRoleReq struct {
 		Id int `form:"id" binding:"required"`
+	}
+
+	AddAdminRoleReq struct {
+		RoleIds []int `form:"role_ids" binding:"required"`
+		UserId  int   `form:"user_id" binding:"required"`
 	}
 )
