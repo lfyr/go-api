@@ -80,6 +80,6 @@ func (this *AppAdminRole) DeleteByRoleId(roleId int, tx *gorm.DB) (err error) {
 }
 
 func (this *AppAdminRole) DeleteByAdminId(adminId int, tx *gorm.DB) (err error) {
-	err = tx.Model(this).Where("admin_id = ?", adminId).Delete(this).Error
+	err = tx.Model(this).Where("user_id = ?", adminId).Delete(this).Error
 	return
 }

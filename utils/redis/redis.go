@@ -30,9 +30,10 @@ func init() {
 	}
 }
 
-func NewDefaultRedisStore(expiration time.Duration) *RedisStore {
+func NewDefaultRedisStore(expiration int) *RedisStore {
+	duration := time.Duration(expiration) * time.Second
 	return &RedisStore{
-		Expiration: time.Second * expiration,
+		Expiration: time.Second * duration,
 		PreKey:     "APP_",
 	}
 }

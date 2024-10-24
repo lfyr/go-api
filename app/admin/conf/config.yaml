@@ -17,3 +17,4 @@ redis:
 system:
   env: prod
   addr: 9999
+  token_expire: 604800

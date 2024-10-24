@@ -16,7 +16,7 @@ type User struct {
 	Token    string         `json:"token"`
 	Avatar   string         `json:"avatar"`
 	Salt     string         `json:"salt"`
-	Role     []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
+	Role     []AppAdminRole `json:"role" gorm:"foreignKey:UserId;references:Id"`
 	Admin    []AppAdmin     `json:"admin" gorm:"foreignKey:UserId;references:Id"`
 }
 

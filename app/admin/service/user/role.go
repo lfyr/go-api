@@ -41,7 +41,7 @@ func (r *RoleService) FirstAdminRole(whereMap map[string]interface{}) (data mode
 
 func (r *RoleService) AddAdminRole(data []model.AppAdminRole) (err error) {
 	tx := masterdb.DB.Begin()
-	err = model.NewAppAdminRole().DeleteByAdminId(data[0].AdminId, tx)
+	err = model.NewAppAdminRole().DeleteByAdminId(data[0].UserId, tx)
 	if err != nil {
 		tx.Rollback()
 		return

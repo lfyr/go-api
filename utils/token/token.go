@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-const sevenDaySecond = 7 * 24 * 60 * 60
-
 func SetToken(user model.User) (token string, err error) {
 	token = getUniquenessToken()
 	err = setLoginInfoByToken(token, user)
@@ -90,7 +88,7 @@ func GetUserInfoByToken(token string) (user model.User, err error) {
 }
 
 func SaveRedisToken(token string, user model.User) (err error) {
-	client := redis.NewDefaultRedisStore(sevenDaySecond)
+	client := redis.NewDefaultRedisStore(utils.GVA_CONFIG.System.TokenExpire)
 	userStr, err := json.Marshal(user)
 	if err != nil {
 		logrus.Error("SaveRedisToken", err.Error())
@@ -133,7 +131,7 @@ func GetUserInfo(c *gin.Context) model.User {
 }
 
 func DelRedisToken(id int, token string) (err error) {
-	client := redis.NewDefaultRedisStore(sevenDaySecond)
+	client := redis.NewDefaultRedisStore(0)
 	err = client.Del(token)
 	if err != nil {
 		logrus.Error("DelRedisToken", err.Error())

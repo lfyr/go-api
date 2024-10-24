@@ -15,7 +15,6 @@ func NewUserRoute() *User {
 }
 
 func (this *User) Login(c *gin.Context) {
-
 	param := LoginReq{}
 	err := c.ShouldBindJSON(&param)
 	if err != nil {
@@ -29,7 +28,7 @@ func (this *User) Login(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	c.SetCookie("token", u.Token, 3600, "/", c.Request.Host, false, true)
+	c.SetCookie("token", u.Token, utils.GVA_CONFIG.System.TokenExpire, "/", c.Request.Host, false, true)
 	utils.OkWithData(c, u)
 	return
 }
