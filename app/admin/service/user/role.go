@@ -16,6 +16,11 @@ func (r *RoleService) List(whereMap map[string]interface{}, fieldSlice []string,
 	return
 }
 
+func (r *RoleService) Many(whereMap map[string]interface{}) (list []model.AppRole) {
+	list = model.NewAppRole().Many(whereMap)
+	return
+}
+
 func (r *RoleService) Add(data model.AppRole) (err error) {
 	err = model.NewAppRole().Create(&data)
 	return
@@ -36,6 +41,11 @@ func (r *RoleService) Del(id int) (err error) {
 
 func (r *RoleService) FirstAdminRole(whereMap map[string]interface{}) (data model.AppAdminRole) {
 	data = model.NewAppAdminRole().First(whereMap)
+	return
+}
+
+func (r *RoleService) FindAdminRole(whereMap map[string]interface{}) (data []model.AppAdminRole) {
+	data = model.NewAppAdminRole().Many(whereMap)
 	return
 }
 

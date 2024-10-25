@@ -18,6 +18,7 @@ func userRouter(routers *gin.RouterGroup) {
 			userRouters.POST("/add", userApi.Add)
 			userRouters.GET("/info", userApi.Info)
 			userRouters.POST("/logout", userApi.Logout)
+			userRouters.GET("/toAssign", userApi.ToAssign)
 		}
 
 		roleRouters := adminRouter.Group("role")

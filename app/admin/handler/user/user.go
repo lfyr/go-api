@@ -92,3 +92,20 @@ func (this *User) List(c *gin.Context) {
 	}, "获取成功")
 	return
 }
+
+func (this *User) ToAssign(c *gin.Context) {
+	param := ToAssignReq{}
+	err := c.ShouldBindQuery(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	list := user.NewRoleService().FindAdminRole(map[string]interface{}{"user_id = ?": param.Id})
+	role := user.NewRoleService().Many(map[string]interface{}{})
+
+	utils.OkWithDetailed(c, map[string]interface{}{
+		"allRolesList": list,
+		"assignRoles":  role,
+	}, "获取成功")
+	return
+}

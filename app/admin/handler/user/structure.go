@@ -5,7 +5,7 @@ type (
 	AddUserReq struct {
 		UserName string `json:"user_name" binding:"required"`
 		Password string `json:"password"  binding:"required"`
-		Email    string `json:"email"  binding:"required"`
+		Email    string `json:"email"`
 		Phone    string `json:"phone"  binding:"required"`
 	}
 	GetUserReq struct {
@@ -16,6 +16,10 @@ type (
 	LoginReq struct {
 		UserName string `json:"username" binding:"required"`
 		Password string `json:"password"  binding:"required"`
+	}
+
+	ToAssignReq struct {
+		Id int `form:"id" binding:"required"`
 	}
 )
 

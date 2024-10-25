@@ -76,10 +76,10 @@ func (this *User) Many(whereMap map[string]interface{}) (app []User) {
 	return
 }
 
-func (this *User) Create(data *User) (err error) {
+func (this *User) Create(data User) (User, error) {
 	tx := masterdb.DB.Model(this)
-	err = tx.Create(&data).Error
-	return
+	err := tx.Create(&data).Error
+	return data, err
 }
 
 func (this *User) Update(Id int, user map[string]interface{}) (err error) {

@@ -24,7 +24,25 @@ func (this *UserService) GetUserById(id int, withSlice []string) (user model.Use
 }
 
 func (this *UserService) Add(data model.User) (err error) {
-	err = model.NewUser().Create(&data)
+	salt := utils.RandomSalt(6)
+	data.Salt = salt
+	data.Password = utils.HashPassword(data.Password, salt)
+	user, _ := model.NewUser().Create(data)
+	adminData := model.AppAdmin{
+		UserId: user.Id,
+		IsUse:  1,
+	}
+	err = model.NewAppAdmin().Create(&adminData)
+	return err
+}
+
+func (this *UserService) Update(data model.User) (err error) {
+	salt := utils.RandomSalt(6)
+	data.Password = utils.HashPassword(data.Password, salt)
+	dataMap := map[string]interface{}{
+		"password": data.Password,
+	}
+	err = model.NewUser().Update(data.Id, dataMap)
 	return err
 }
 
