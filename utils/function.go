@@ -1,36 +1,40 @@
 package utils
 
 import (
-	"crypto"
-	"encoding/hex"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"math/rand"
-	"time"
 	"unicode"
 )
 
-func HashPassword(password, salt string) string {
-	md5 := crypto.MD5.New()
-	md5.Write([]byte(password))
-	password = hex.EncodeToString(md5.Sum(nil))
-	// 添加 salt
-	password = password + salt
-	md5.Reset()
-	md5.Write([]byte(password))
-	return hex.EncodeToString(md5.Sum(nil))
+func HashPassword(password string) string {
+	// GenerateFromPassword函数用于生成哈希密码
+	// 第二个参数是cost，取值范围在4 - 31之间，它决定了哈希计算的成本
+	// 成本越高，哈希计算越慢，但安全性越高
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		logrus.Error("生成密码失败", err.Error())
+		return ""
+	}
+	return string(hashedPassword)
+}
+
+func VerifyPassword(hashedPassword, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return err == nil
 }
 
 func RandomSalt(num int) string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyz"
-	bytes := []byte(str)
-	result := []byte{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < num; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
+	buffer := make([]byte, num)
+	_, err := rand.Read(buffer)
+	if err != nil {
+		panic("读取随机字节失败")
 	}
-	return string(result)
+	// 可以根据需要将字节切片转换为其他形式的字符串，如十六进制等
+	return fmt.Sprintf("%x", buffer)
 }
 
 func CheckJsonParam(c *gin.Context) {

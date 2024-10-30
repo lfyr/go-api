@@ -24,9 +24,8 @@ func (this *UserService) GetUserById(id int, withSlice []string) (user model.Use
 }
 
 func (this *UserService) Add(data model.User) (err error) {
-	salt := utils.RandomSalt(6)
-	data.Salt = salt
-	data.Password = utils.HashPassword(data.Password, salt)
+
+	data.Password = utils.HashPassword(data.Password)
 	user, _ := model.NewUser().Create(data)
 	adminData := model.AppAdmin{
 		UserId: user.Id,
@@ -37,8 +36,8 @@ func (this *UserService) Add(data model.User) (err error) {
 }
 
 func (this *UserService) Update(data model.User) (err error) {
-	salt := utils.RandomSalt(6)
-	data.Password = utils.HashPassword(data.Password, salt)
+
+	data.Password = utils.HashPassword(data.Password)
 	dataMap := map[string]interface{}{
 		"password": data.Password,
 	}
@@ -53,7 +52,7 @@ func (this *UserService) Login(userName, password string) (loginReq LoginReq, er
 		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id})
 		if admin.Id > 0 {
 			loginReq.User = user
-			if user.Password == utils.HashPassword(password, user.Salt) {
+			if utils.VerifyPassword(user.Password, password) {
 				tk, err := token.SetToken(user)
 				if err != nil {
 					return loginReq, err
