@@ -87,29 +87,3 @@ func (this *Role) Del(c *gin.Context) {
 	utils.OkWithMessage(c, "删除成功")
 	return
 }
-
-func (this *Role) AddAdminRole(c *gin.Context) {
-	param := AddAdminRoleReq{}
-	err := c.ShouldBindJSON(&param)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
-	}
-	data := []model.AppAdminRole{}
-	if len(param.RoleIds) > 0 {
-		for _, v := range param.RoleIds {
-			tmp := model.AppAdminRole{
-				UserId: param.UserId,
-				RoleId: v,
-			}
-			data = append(data, tmp)
-		}
-	}
-	err = user.NewRoleService().AddAdminRole(data)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
-	}
-	utils.OkWithMessage(c, "添加成功")
-	return
-}

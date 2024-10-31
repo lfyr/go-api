@@ -39,7 +39,8 @@ func (this *UserService) Update(data model.User) (err error) {
 
 	data.Password = utils.HashPassword(data.Password)
 	dataMap := map[string]interface{}{
-		"password": data.Password,
+		"user_name": data.UserName,
+		"phone":     data.Phone,
 	}
 	err = model.NewUser().Update(data.Id, dataMap)
 	return err

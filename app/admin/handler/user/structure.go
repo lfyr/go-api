@@ -17,7 +17,11 @@ type (
 		UserName string `json:"username" binding:"required"`
 		Password string `json:"password"  binding:"required"`
 	}
-
+	UpdateUserReq struct {
+		Id       int    `json:"id" binding:"required"`
+		UserName string `json:"user_name"`
+		Phone    string `json:"phone"`
+	}
 	ToAssignReq struct {
 		Id int `form:"id" binding:"required"`
 	}
@@ -44,7 +48,7 @@ type (
 	}
 
 	AddAdminRoleReq struct {
-		RoleIds []int `form:"role_ids" binding:"required"`
-		UserId  int   `form:"user_id" binding:"required"`
+		RoleId []int `form:"roleId" binding:"required"`
+		UserId int   `form:"userId" binding:"required"`
 	}
 )

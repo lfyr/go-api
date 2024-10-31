@@ -6,6 +6,7 @@ import (
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
 	"github.com/lfyr/go-api/utils/token"
+	"github.com/samber/lo"
 )
 
 type User struct{}
@@ -49,6 +50,26 @@ func (this *User) Logout(c *gin.Context) {
 		return
 	}
 	utils.Ok(c)
+	return
+}
+
+func (this *User) Update(c *gin.Context) {
+	param := UpdateUserReq{}
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	data := model.User{}
+	data.Id = param.Id
+	data.UserName = param.UserName
+	data.Phone = param.Phone
+	err = user.NewUserService().Update(data)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithMessage(c, "修改成功")
 	return
 }
 
@@ -101,11 +122,38 @@ func (this *User) ToAssign(c *gin.Context) {
 		return
 	}
 	list := user.NewRoleService().FindAdminRole(map[string]interface{}{"user_id = ?": param.Id})
-	role := user.NewRoleService().Many(map[string]interface{}{})
+	allRole := user.NewRoleService().Many(map[string]interface{}{})
 
+	roleId := lo.Map(list, func(role model.AppAdminRole, _ int) int {
+		return role.RoleId
+	})
 	utils.OkWithDetailed(c, map[string]interface{}{
-		"allRolesList": list,
-		"assignRoles":  role,
+		"allRolesList": allRole,
+		"assignRoles":  roleId,
 	}, "获取成功")
+	return
+}
+
+func (this *User) DoAssign(c *gin.Context) {
+	param := AddAdminRoleReq{}
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	data := []model.AppAdminRole{}
+	for _, v := range param.RoleId {
+		tmp := model.AppAdminRole{
+			UserId: param.UserId,
+			RoleId: v,
+		}
+		data = append(data, tmp)
+	}
+	err = user.NewRoleService().AddAdminRole(param.UserId, data)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithMessage(c, "添加成功")
 	return
 }

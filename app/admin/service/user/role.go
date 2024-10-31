@@ -49,17 +49,20 @@ func (r *RoleService) FindAdminRole(whereMap map[string]interface{}) (data []mod
 	return
 }
 
-func (r *RoleService) AddAdminRole(data []model.AppAdminRole) (err error) {
+func (r *RoleService) AddAdminRole(userId int, data []model.AppAdminRole) (err error) {
+
 	tx := masterdb.DB.Begin()
-	err = model.NewAppAdminRole().DeleteByAdminId(data[0].UserId, tx)
+	err = model.NewAppAdminRole().DeleteByAdminId(userId, tx)
 	if err != nil {
 		tx.Rollback()
 		return
 	}
-	err = model.NewAppAdminRole().CreateInBatches(data, tx)
-	if err != nil {
-		tx.Rollback()
-		return
+	if len(data) > 0 {
+		err = model.NewAppAdminRole().CreateInBatches(data, tx)
+		if err != nil {
+			tx.Rollback()
+			return
+		}
 	}
 	tx.Commit()
 	return
