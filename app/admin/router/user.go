@@ -17,6 +17,7 @@ func userRouter(routers *gin.RouterGroup) {
 			userRouters.GET("/list", userApi.List)
 			userRouters.POST("/add", userApi.Add)
 			userRouters.POST("/update", userApi.Update)
+			userRouters.POST("/delete", userApi.Delete)
 			userRouters.GET("/info", userApi.Info)
 			userRouters.POST("/logout", userApi.Logout)
 			userRouters.GET("/toAssign", userApi.ToAssign)

@@ -7,17 +7,18 @@ import (
 
 type User struct {
 	global.Model
-	UserName string         `json:"user_name"`
-	Password string         `json:"password"`
-	Email    string         `json:"email"`
-	Phone    string         `json:"phone"`
-	Ip       string         `json:"ip"`
-	Status   string         `json:"status"`
-	Token    string         `json:"token"`
-	Avatar   string         `json:"avatar"`
-	Salt     string         `json:"salt"`
-	Role     []AppAdminRole `json:"role" gorm:"foreignKey:UserId;references:Id"`
-	Admin    []AppAdmin     `json:"admin" gorm:"foreignKey:UserId;references:Id"`
+	UserName      string         `json:"user_name"`
+	Nickname      string         `json:"nickname"`
+	Password      string         `json:"password"`
+	Email         string         `json:"email"`
+	Phone         string         `json:"phone"`
+	Ip            string         `json:"ip"`
+	Status        string         `json:"status"`
+	Token         string         `json:"token"`
+	Avatar        string         `json:"avatar"`
+	DeletedStatus int            `json:"deleted_status"`
+	Role          []AppAdminRole `json:"role" gorm:"foreignKey:UserId;references:Id"`
+	Admin         []AppAdmin     `json:"admin" gorm:"foreignKey:UserId;references:Id"`
 }
 
 func (u User) TableName() string {
@@ -84,5 +85,10 @@ func (this *User) Create(data User) (User, error) {
 
 func (this *User) Update(Id int, user map[string]interface{}) (err error) {
 	err = masterdb.DB.Model(this).Where("id = ?", Id).Updates(&user).Error
+	return
+}
+
+func (this *User) Delete(Ids []int) (err error) {
+	err = masterdb.DB.Model(this).Where("id in (?)", Ids).Delete(&this).Error
 	return
 }

@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"github.com/lfyr/go-api/database/masterdb"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
 	"github.com/lfyr/go-api/utils/token"
@@ -67,6 +68,12 @@ func (this *UserService) Login(userName, password string) (loginReq LoginReq, er
 		return loginReq, errors.New("用户无权限")
 	}
 	return loginReq, errors.New("未找到该用户")
+}
+
+func (this *UserService) Delete(ids []int) (err error) {
+	data := map[string]interface{}{"deleted_status": 1}
+	err = masterdb.DB.Model(model.User{}).Where("id in (?)", ids).Updates(data).Error
+	return err
 }
 
 func getUserNameWhereMap(userName string) map[string]interface{} {

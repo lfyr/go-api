@@ -22,6 +22,9 @@ type (
 		UserName string `json:"user_name"`
 		Phone    string `json:"phone"`
 	}
+	DelUserReq struct {
+		Ids []int `json:"ids" binding:"required"`
+	}
 	ToAssignReq struct {
 		Id int `form:"id" binding:"required"`
 	}

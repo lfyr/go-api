@@ -95,6 +95,23 @@ func (this *User) Add(c *gin.Context) {
 	return
 }
 
+func (this *User) Delete(c *gin.Context) {
+	param := DelUserReq{}
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+
+	err = user.NewUserService().Delete(param.Ids)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithData(c, true)
+	return
+}
+
 func (this *User) List(c *gin.Context) {
 	param := GetUserReq{}
 	err := c.ShouldBindQuery(&param)
