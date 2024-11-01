@@ -8,13 +8,10 @@ import (
 
 type AppAdmin struct {
 	global.Model
-	UserId   int            `json:"user_id"`
-	IsUse    int            `json:"is_use"`
-	Role     []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
-	User     *User          `json:"user" gorm:"foreignKey:Id;references:UserId"`
-	UserName string         `json:"user_name" gorm:"-"`
-	Nickname string         `json:"nickname" gorm:"-"`
-	Phone    string         `json:"phone" gorm:"-"`
+	UserId int            `json:"user_id"`
+	IsUse  int            `json:"is_use"`
+	Role   []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
+	User   *User          `json:"user" gorm:"foreignKey:Id;references:UserId"`
 }
 
 type ListRsp struct {
