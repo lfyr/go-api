@@ -8,9 +8,9 @@ import (
 
 type AppRolePrivilege struct {
 	global.Model
-	PriId        int            `json:"pri_id"`
-	RoleId       int            `json:"role_id"`
-	AppPrivilege []AppPrivilege `gorm:"foreignKey:Id;references:PriId"`
+	PriId        int          `json:"pri_id"`
+	RoleId       int          `json:"role_id"`
+	AppPrivilege AppPrivilege `json:"privilege" gorm:"foreignKey:Id;references:PriId"`
 }
 
 func NewAppRolePrivilege() *AppRolePrivilege {

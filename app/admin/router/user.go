@@ -9,19 +9,20 @@ import (
 func userRouter(routers *gin.RouterGroup) {
 
 	userApi := user.NewUserRoute()
+	adminApi := user.NewAdminRoute()
 	routers.POST("/user/login", userApi.Login)
 	adminRouter := routers.Group("", middleware.LoginAuth(), middleware.CheckPrivilege())
 	{
 		userRouters := adminRouter.Group("user")
 		{
-			userRouters.GET("/list", userApi.List)
-			userRouters.POST("/add", userApi.Add)
-			userRouters.POST("/update", userApi.Update)
-			userRouters.POST("/delete", userApi.Delete)
-			userRouters.GET("/info", userApi.Info)
+			userRouters.GET("/list", adminApi.List)
+			userRouters.POST("/add", adminApi.Add)
+			userRouters.POST("/update", adminApi.Update)
+			userRouters.POST("/delete", adminApi.Delete)
+			userRouters.GET("/info", adminApi.Info)
 			userRouters.POST("/logout", userApi.Logout)
-			userRouters.GET("/toAssign", userApi.ToAssign)
-			userRouters.POST("/doAssign", userApi.DoAssign)
+			userRouters.GET("/toAssign", adminApi.ToAssign)
+			userRouters.POST("/doAssign", adminApi.DoAssign)
 		}
 
 		roleRouters := adminRouter.Group("role")

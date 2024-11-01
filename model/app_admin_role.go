@@ -8,9 +8,9 @@ import (
 
 type AppAdminRole struct {
 	global.Model
-	UserId           int                `json:"user_id"`
-	RoleId           int                `json:"role_id" `
-	AppRolePrivilege []AppRolePrivilege `gorm:"foreignKey:RoleId;references:RoleId"`
+	AdminId          int                `json:"admin_id"`
+	RoleId           int                `json:"role_id"`
+	AppRolePrivilege []AppRolePrivilege `json:"rolePrivilege" gorm:"foreignKey:RoleId;references:RoleId"`
 }
 
 func (u *AppAdminRole) TableName() string {
@@ -80,6 +80,6 @@ func (this *AppAdminRole) DeleteByRoleId(roleId int, tx *gorm.DB) (err error) {
 }
 
 func (this *AppAdminRole) DeleteByAdminId(adminId int, tx *gorm.DB) (err error) {
-	err = tx.Model(this).Where("user_id = ?", adminId).Delete(this).Error
+	err = tx.Model(this).Where("admin_id = ?", adminId).Delete(this).Error
 	return
 }

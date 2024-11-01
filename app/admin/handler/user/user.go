@@ -6,7 +6,6 @@ import (
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
 	"github.com/lfyr/go-api/utils/token"
-	"github.com/samber/lo"
 )
 
 type User struct{}
@@ -31,13 +30,6 @@ func (this *User) Login(c *gin.Context) {
 	}
 	c.SetCookie("token", u.Token, utils.GVA_CONFIG.System.TokenExpire, "/", c.Request.Host, false, true)
 	utils.OkWithData(c, u)
-	return
-}
-
-func (this *User) Info(c *gin.Context) {
-	userId := token.GetUid(c)
-	data := user.NewUserService().GetUserById(userId, []string{})
-	utils.OkWithData(c, data)
 	return
 }
 
@@ -81,10 +73,7 @@ func (this *User) Add(c *gin.Context) {
 		return
 	}
 	data := model.User{
-		UserName: param.UserName,
-		Password: param.Password,
-		Email:    param.Email,
-		Phone:    param.Phone,
+		Phone: param.Phone,
 	}
 	err = user.NewUserService().Add(data)
 	if err != nil {
@@ -119,7 +108,7 @@ func (this *User) List(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	list, count := user.NewUserService().List(map[string]interface{}{}, []string{}, param.Page, param.PageSize, []string{"Admin"})
+	list, count := user.NewUserService().List(map[string]interface{}{}, []string{}, param.Page, param.PageSize, []string{"Admin", "Role.AppRolePrivilege.AppPrivilege"})
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
@@ -128,49 +117,5 @@ func (this *User) List(c *gin.Context) {
 		"list":  list,
 		"count": count,
 	}, "获取成功")
-	return
-}
-
-func (this *User) ToAssign(c *gin.Context) {
-	param := ToAssignReq{}
-	err := c.ShouldBindQuery(&param)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
-	}
-	list := user.NewRoleService().FindAdminRole(map[string]interface{}{"user_id = ?": param.Id})
-	allRole := user.NewRoleService().Many(map[string]interface{}{})
-
-	roleId := lo.Map(list, func(role model.AppAdminRole, _ int) int {
-		return role.RoleId
-	})
-	utils.OkWithDetailed(c, map[string]interface{}{
-		"allRolesList": allRole,
-		"assignRoles":  roleId,
-	}, "获取成功")
-	return
-}
-
-func (this *User) DoAssign(c *gin.Context) {
-	param := AddAdminRoleReq{}
-	err := c.ShouldBindJSON(&param)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
-	}
-	data := []model.AppAdminRole{}
-	for _, v := range param.RoleId {
-		tmp := model.AppAdminRole{
-			UserId: param.UserId,
-			RoleId: v,
-		}
-		data = append(data, tmp)
-	}
-	err = user.NewRoleService().AddAdminRole(param.UserId, data)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
-	}
-	utils.OkWithMessage(c, "添加成功")
 	return
 }

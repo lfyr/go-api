@@ -19,8 +19,13 @@ func (this *UserService) List(whereMap map[string]interface{}, fieldSlice []stri
 	return
 }
 
+func (this *UserService) First(whereMap map[string]interface{}) (user model.User) {
+	user = model.NewUser().First(whereMap)
+	return
+}
+
 func (this *UserService) GetUserById(id int, withSlice []string) (user model.User) {
-	user = model.NewUser().First(map[string]interface{}{"id": id}, withSlice)
+	user = model.NewUser().First(map[string]interface{}{"id": id})
 	return
 }
 
@@ -49,10 +54,10 @@ func (this *UserService) Update(data model.User) (err error) {
 
 func (this *UserService) Login(userName, password string) (loginReq LoginReq, err error) {
 	whereMap := getUserNameWhereMap(userName)
-	user := model.NewUser().First(whereMap, []string{})
+	user := model.NewUser().First(whereMap)
 	if user.Id > 0 {
-		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id})
-		if admin.Id > 0 {
+		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id}, []string{})
+		if admin.Id > 0 && admin.IsUse == 1 {
 			loginReq.User = user
 			if utils.VerifyPassword(user.Password, password) {
 				tk, err := token.SetToken(user)

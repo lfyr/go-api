@@ -3,10 +3,7 @@ package user
 // User
 type (
 	AddUserReq struct {
-		UserName string `json:"user_name" binding:"required"`
-		Password string `json:"password"  binding:"required"`
-		Email    string `json:"email"`
-		Phone    string `json:"phone"  binding:"required"`
+		Phone string `json:"phone"  binding:"required"`
 	}
 	GetUserReq struct {
 		Page     int `form:"page" binding:"required"`
@@ -27,6 +24,19 @@ type (
 	}
 	ToAssignReq struct {
 		Id int `form:"id" binding:"required"`
+	}
+	InfoReq struct {
+		Id       int    `json:"id"`
+		UserId   int    `json:"user_id"`
+		IsUse    int    `json:"is_use"`
+		UserName string `json:"user_name"`
+		Nickname string `json:"nickname"`
+		Password string `json:"password"`
+		Email    string `json:"email"`
+		Phone    string `json:"phone"`
+		Ip       string `json:"ip"`
+		Token    string `json:"token"`
+		Avatar   string `json:"avatar"`
 	}
 )
 
@@ -51,7 +61,33 @@ type (
 	}
 
 	AddAdminRoleReq struct {
-		RoleId []int `form:"roleId" binding:"required"`
-		UserId int   `form:"userId" binding:"required"`
+		RoleId  []int `form:"roleId" binding:"required"`
+		AdminId int   `form:"adminId" binding:"required"`
+	}
+)
+
+// Admin
+type (
+	GetAdminListReq struct {
+		UserName string `form:"user_name"`
+		Page     int    `form:"page" binding:"required"`
+		PageSize int    `form:"page_size" binding:"required"`
+	}
+
+	GetAdminListRsp struct {
+		Id           int    `json:"id"`
+		UserId       int    `json:"user_id"`
+		IsUse        int    `json:"is_use"`
+		UserName     string `json:"user_name"`
+		Nickname     string `json:"nickname"`
+		Phone        string `json:"phone"`
+		PrivilegeStr string `json:"privilegeStr"`
+	}
+	AddAdminReq struct {
+		Phone string `json:"phone"  binding:"required"`
+	}
+	UpdateAdminReq struct {
+		Id    int `json:"id"`
+		IsUse int `json:"is_use"`
 	}
 )
