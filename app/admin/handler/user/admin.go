@@ -23,7 +23,11 @@ func (this *AdminRoute) List(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	list, count := user.NewAdminService().List(map[string]interface{}{"user_name like ?": "%" + param.UserName + "%"}, []string{"app_admin.*", "user.user_name,user.nickname,user.phone"}, param.Page, param.PageSize, []string{"Role.AppRolePrivilege.AppPrivilege"})
+	whereMap := map[string]interface{}{}
+	if len(param.UserName) > 0 {
+		whereMap["role_name like ?"] = "%" + param.UserName + "%"
+	}
+	list, count := user.NewAdminService().List(whereMap, []string{"app_admin.*", "user.user_name,user.nickname,user.phone"}, param.Page, param.PageSize, []string{"Role.AppRolePrivilege.AppPrivilege"})
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return

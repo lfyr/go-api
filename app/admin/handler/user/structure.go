@@ -52,8 +52,9 @@ type (
 	}
 
 	GetRoleReq struct {
-		Page     int `form:"page" binding:"required"`
-		PageSize int `form:"page_size" binding:"required"`
+		RoleName string `form:"role_name"`
+		Page     int    `form:"page" binding:"required"`
+		PageSize int    `form:"page_size" binding:"required"`
 	}
 
 	DelRoleReq struct {

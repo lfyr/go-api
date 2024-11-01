@@ -20,7 +20,12 @@ func (this *Role) List(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	list, count := user.NewRoleService().List(map[string]interface{}{}, []string{}, param.Page, param.PageSize, []string{})
+
+	whereMap := map[string]interface{}{}
+	if len(param.RoleName) > 0 {
+		whereMap["role_name like ?"] = "%" + param.RoleName + "%"
+	}
+	list, count := user.NewRoleService().List(whereMap, []string{}, param.Page, param.PageSize, []string{})
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
