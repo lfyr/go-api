@@ -20,7 +20,7 @@ type ListRsp struct {
 	UpdatedAt time.Time      `json:"updated_at"`
 	IsUse     int            `json:"is_use"`
 	UserId    int            `json:"user_id"`
-	Role      []AppAdminRole `json:"role" gorm:"foreignKey:AdminId;references:Id"`
+	AdminRole []AppAdminRole `json:"admin_role" gorm:"foreignKey:AdminId;references:Id"`
 	User      *User          `json:"user" gorm:"foreignKey:Id;references:UserId"`
 	UserName  string         `json:"user_name" `
 	Nickname  string         `json:"nickname"`

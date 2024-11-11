@@ -76,13 +76,13 @@ type (
 	}
 
 	GetAdminListRsp struct {
-		Id           int    `json:"id"`
-		UserId       int    `json:"user_id"`
-		IsUse        int    `json:"is_use"`
-		UserName     string `json:"user_name"`
-		Nickname     string `json:"nickname"`
-		Phone        string `json:"phone"`
-		PrivilegeStr string `json:"privilegeStr"`
+		Id       int    `json:"id"`
+		UserId   int    `json:"user_id"`
+		IsUse    int    `json:"is_use"`
+		UserName string `json:"user_name"`
+		Nickname string `json:"nickname"`
+		Phone    string `json:"phone"`
+		RoleStr  string `json:"role_str"`
 	}
 	AddAdminReq struct {
 		Phone string `json:"phone"  binding:"required"`

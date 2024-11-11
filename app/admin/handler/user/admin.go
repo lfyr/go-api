@@ -27,27 +27,26 @@ func (this *AdminRoute) List(c *gin.Context) {
 	if len(param.UserName) > 0 {
 		whereMap["role_name like ?"] = "%" + param.UserName + "%"
 	}
-	list, count := user.NewAdminService().List(whereMap, []string{"app_admin.*", "user.user_name,user.nickname,user.phone"}, param.Page, param.PageSize, []string{"Role.AppRolePrivilege.AppPrivilege"})
+	list, count := user.NewAdminService().List(whereMap, []string{"app_admin.*", "user.user_name,user.nickname,user.phone"}, param.Page, param.PageSize, []string{"AdminRole.Role"})
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
 	rData := []GetAdminListRsp{}
 	for _, admin := range list {
-		privilegeStr := ""
-		for _, role := range admin.Role {
-			for _, rolePrivilege := range role.AppRolePrivilege {
-				privilegeStr += "," + rolePrivilege.AppPrivilege.PriName
-			}
+		roleStr := ""
+		for _, role := range admin.AdminRole {
+
+			roleStr += "," + role.Role.RoleName
 		}
 		tmp := GetAdminListRsp{
-			Id:           admin.Id,
-			UserId:       admin.UserId,
-			IsUse:        admin.IsUse,
-			UserName:     admin.UserName,
-			Nickname:     admin.Nickname,
-			Phone:        admin.Phone,
-			PrivilegeStr: strings.Trim(privilegeStr, ","),
+			Id:       admin.Id,
+			UserId:   admin.UserId,
+			IsUse:    admin.IsUse,
+			UserName: admin.UserName,
+			Nickname: admin.Nickname,
+			Phone:    admin.Phone,
+			RoleStr:  strings.Trim(roleStr, ","),
 		}
 		rData = append(rData, tmp)
 	}

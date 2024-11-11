@@ -11,6 +11,7 @@ type AppAdminRole struct {
 	AdminId          int                `json:"admin_id"`
 	RoleId           int                `json:"role_id"`
 	AppRolePrivilege []AppRolePrivilege `json:"rolePrivilege" gorm:"foreignKey:RoleId;references:RoleId"`
+	Role             AppRole            `json:"role" gorm:"foreignKey:Id;references:RoleId"`
 }
 
 func (u *AppAdminRole) TableName() string {

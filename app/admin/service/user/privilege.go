@@ -7,8 +7,17 @@ import (
 
 type PrivilegeService struct{}
 
+func NewPrivilegeService() *PrivilegeService {
+	return &PrivilegeService{}
+}
+
 func (r *PrivilegeService) Add(data model.AppPrivilege) (err error) {
 	err = model.NewAppPrivilege().Create(&data)
+	return
+}
+
+func (r *PrivilegeService) Many(whereMap map[string]interface{}) (data []model.AppPrivilege) {
+	data = model.NewAppPrivilege().Many(whereMap)
 	return
 }
 

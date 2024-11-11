@@ -92,3 +92,41 @@ func (this *Role) Del(c *gin.Context) {
 	utils.OkWithMessage(c, "删除成功")
 	return
 }
+
+type PrivilegeTree struct {
+	Id         int             `json:"id"`
+	PriName    string          `json:"pri_name"`
+	ActionName string          `json:"action_name"`
+	ParentId   int             `json:"parent_id"`
+	Children   []PrivilegeTree `json:"children"`
+}
+
+func (this *Role) ToAssign(c *gin.Context) {
+	data := user.NewPrivilegeService().Many(map[string]interface{}{})
+	rData := []PrivilegeTree{}
+	if len(data) > 0 {
+		rData = getTree(data, 0)
+	}
+	utils.OkWithData(c, rData)
+	return
+}
+
+func (this *Role) DoAssign(c *gin.Context) {
+}
+
+func getTree(data []model.AppPrivilege, pid int) (dataTree []PrivilegeTree) {
+	for _, item := range data {
+		if item.ParentId == pid {
+			pri := PrivilegeTree{
+				Id:         item.Id,
+				PriName:    item.PriName,
+				ActionName: item.ActionName,
+				ParentId:   item.ParentId,
+			}
+			child := getTree(data, item.Id)
+			pri.Children = child
+			dataTree = append(dataTree, pri)
+		}
+	}
+	return dataTree
+}

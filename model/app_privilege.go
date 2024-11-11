@@ -59,7 +59,7 @@ func (this *AppPrivilege) Many(whereMap map[string]interface{}) (list []AppPrivi
 			tx = tx.Where(k, v)
 		}
 	}
-	tx.Preload("Category").Find(&list)
+	tx.Find(&list)
 	return
 }
 

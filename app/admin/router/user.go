@@ -32,10 +32,12 @@ func userRouter(routers *gin.RouterGroup) {
 			roleRouters.POST("/add", roleApi.Add)
 			roleRouters.POST("/update", roleApi.Update)
 			roleRouters.GET("/delete", roleApi.Del)
+			roleRouters.GET("/toAssign", roleApi.ToAssign)
+			roleRouters.POST("/doAssign", roleApi.DoAssign)
 		}
 
 		privilegeRouters := adminRouter.Group("privilege")
-		privilegeApi := user.NewRoleRoute()
+		privilegeApi := user.NewPrivilegeRoute()
 		{
 			privilegeRouters.GET("/list", privilegeApi.List)
 			privilegeRouters.POST("/add", privilegeApi.Add)
