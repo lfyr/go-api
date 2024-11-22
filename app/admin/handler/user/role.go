@@ -93,16 +93,15 @@ func (this *Role) Del(c *gin.Context) {
 	return
 }
 
-type PrivilegeTree struct {
-	Id         int             `json:"id"`
-	PriName    string          `json:"pri_name"`
-	ActionName string          `json:"action_name"`
-	ParentId   int             `json:"parent_id"`
-	Children   []PrivilegeTree `json:"children"`
-}
-
 func (this *Role) ToAssign(c *gin.Context) {
-	data := user.NewPrivilegeService().Many(map[string]interface{}{})
+	param := GetRolePrivilegeReq{}
+	err := c.ShouldBindQuery(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	data := user.NewPrivilegeService().GetPriByRoleId(param.RoleId)
+	//allPri := user.NewPrivilegeService().Many(map[string]interface{}{})
 	rData := []PrivilegeTree{}
 	if len(data) > 0 {
 		rData = getTree(data, 0)
@@ -114,7 +113,7 @@ func (this *Role) ToAssign(c *gin.Context) {
 func (this *Role) DoAssign(c *gin.Context) {
 }
 
-func getTree(data []model.AppPrivilege, pid int) (dataTree []PrivilegeTree) {
+func getTree(data []user.GetPriByRoleIdRes, pid int) (dataTree []PrivilegeTree) {
 	for _, item := range data {
 		if item.ParentId == pid {
 			pri := PrivilegeTree{

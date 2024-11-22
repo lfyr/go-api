@@ -21,6 +21,12 @@ func (r *PrivilegeService) Many(whereMap map[string]interface{}) (data []model.A
 	return
 }
 
+func (r *PrivilegeService) GetPriByRoleId(roleId int) (data []GetPriByRoleIdRes) {
+	masterdb.DB.Table(model.NewAppRolePrivilege().TableName()+" as a").Select("b.id,a.pri_name,a.action_name,a.parent_id,b.role_id,b.pri_id").Joins("left join app_privilege b on a.pri_id = b.id").
+		Where("a.role_id = ?", roleId).Find(&data)
+	return
+}
+
 func (r *PrivilegeService) UpData(data model.AppPrivilege) (err error) {
 	upData := map[string]interface{}{
 		"role_name":   data.PriName,

@@ -65,6 +65,18 @@ type (
 		RoleId  []int `form:"roleId" binding:"required"`
 		AdminId int   `form:"adminId" binding:"required"`
 	}
+
+	GetRolePrivilegeReq struct {
+		RoleId int `form:"role_id" binding:"required"`
+	}
+
+	PrivilegeTree struct {
+		Id         int             `json:"id"`
+		PriName    string          `json:"pri_name"`
+		ActionName string          `json:"action_name"`
+		ParentId   int             `json:"parent_id"`
+		Children   []PrivilegeTree `json:"children"`
+	}
 )
 
 // Admin
