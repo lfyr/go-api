@@ -77,6 +77,11 @@ type (
 		ParentId   int             `json:"parent_id"`
 		Children   []PrivilegeTree `json:"children"`
 	}
+
+	AddRolePrivilegeReq struct {
+		RoleId int   `json:"roleId" binding:"required"`
+		PriId  []int `json:"priId" binding:"required"`
+	}
 )
 
 // Admin

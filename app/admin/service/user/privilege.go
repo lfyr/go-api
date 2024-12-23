@@ -21,9 +21,8 @@ func (r *PrivilegeService) Many(whereMap map[string]interface{}) (data []model.A
 	return
 }
 
-func (r *PrivilegeService) GetPriByRoleId(roleId int) (data []GetPriByRoleIdRes) {
-	masterdb.DB.Table(model.NewAppRolePrivilege().TableName()+" as a").Select("b.id,b.pri_name,b.action_name,b.parent_id,a.role_id,a.pri_id").Joins("left join app_privilege b on a.pri_id = b.id").
-		Where("a.role_id = ?", roleId).Find(&data)
+func (r *PrivilegeService) GetPriByRoleId(whereMap map[string]interface{}, fieldSlice []string) (data []model.AppRolePrivilege) {
+	data = model.NewAppRolePrivilege().Many(whereMap, fieldSlice)
 	return
 }
 
@@ -44,7 +43,7 @@ func (r *PrivilegeService) delData(id int) (err error) {
 
 func (r *PrivilegeService) AddRolePrivilege(roleId int, data []model.AppRolePrivilege) (err error) {
 	tx := masterdb.DB.Begin()
-	err = model.NewAppAdminRole().DeleteByRoleId(roleId, tx)
+	err = model.NewAppRolePrivilege().DeleteByRoleId(roleId, tx)
 	if err != nil {
 		tx.Rollback()
 		return

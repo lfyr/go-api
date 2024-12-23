@@ -100,20 +100,51 @@ func (this *Role) ToAssign(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	data := user.NewPrivilegeService().GetPriByRoleId(param.RoleId)
-	//allPri := user.NewPrivilegeService().Many(map[string]interface{}{})
-	rData := []PrivilegeTree{}
+	data := user.NewPrivilegeService().GetPriByRoleId(map[string]interface{}{"role_id": param.RoleId}, []string{"pri_id"})
+	roleId := []int{}
 	if len(data) > 0 {
-		rData = getTree(data, 0)
+		for _, datum := range data {
+			roleId = append(roleId, datum.PriId)
+		}
 	}
-	utils.OkWithData(c, rData)
+	allPri := user.NewPrivilegeService().Many(map[string]interface{}{})
+	rData := []PrivilegeTree{}
+	if len(allPri) > 0 {
+		rData = getTree(allPri, 0)
+	}
+	utils.OkWithData(c, map[string]interface{}{
+		"allPri":  rData,
+		"rolePri": roleId,
+	})
 	return
 }
 
 func (this *Role) DoAssign(c *gin.Context) {
+	param := AddRolePrivilegeReq{}
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	data := []model.AppRolePrivilege{}
+	for _, v := range param.PriId {
+		tmp := model.AppRolePrivilege{
+			RoleId: param.RoleId,
+			PriId:  v,
+		}
+		data = append(data, tmp)
+	}
+
+	err = user.NewPrivilegeService().AddRolePrivilege(param.RoleId, data)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	utils.OkWithMessage(c, "分配成功")
+	return
 }
 
-func getTree(data []user.GetPriByRoleIdRes, pid int) (dataTree []PrivilegeTree) {
+func getTree(data []model.AppPrivilege, pid int) (dataTree []PrivilegeTree) {
 	for _, item := range data {
 		if item.ParentId == pid {
 			pri := PrivilegeTree{

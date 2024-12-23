@@ -53,8 +53,13 @@ func (this *AppRolePrivilege) First(whereMap map[string]interface{}) (detail App
 	return
 }
 
-func (this *AppRolePrivilege) Many(whereMap map[string]interface{}) (list []AppRolePrivilege) {
+func (this *AppRolePrivilege) Many(whereMap map[string]interface{}, fieldSlice []string) (list []AppRolePrivilege) {
 	tx := masterdb.DB.Model(this)
+
+	if len(fieldSlice) > 0 {
+		tx = tx.Select(fieldSlice)
+	}
+
 	if len(whereMap) > 0 {
 		for k, v := range whereMap {
 			tx = tx.Where(k, v)
@@ -66,5 +71,10 @@ func (this *AppRolePrivilege) Many(whereMap map[string]interface{}) (list []AppR
 
 func (this *AppRolePrivilege) CreateInBatches(data []AppRolePrivilege, tx *gorm.DB) (err error) {
 	err = tx.Model(this).CreateInBatches(&data, 50).Error
+	return
+}
+
+func (this *AppRolePrivilege) DeleteByRoleId(roleId int, tx *gorm.DB) (err error) {
+	err = tx.Model(this).Where("role_id = ?", roleId).Delete(this).Error
 	return
 }
