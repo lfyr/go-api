@@ -32,8 +32,6 @@ func userRouter(routers *gin.RouterGroup) {
 			roleRouters.POST("/add", roleApi.Add)
 			roleRouters.POST("/update", roleApi.Update)
 			roleRouters.GET("/delete", roleApi.Del)
-			roleRouters.GET("/toAssign", roleApi.ToAssign)
-			roleRouters.POST("/doAssign", roleApi.DoAssign)
 		}
 
 		privilegeRouters := adminRouter.Group("privilege")
@@ -43,6 +41,8 @@ func userRouter(routers *gin.RouterGroup) {
 			privilegeRouters.POST("/add", privilegeApi.Add)
 			privilegeRouters.POST("/update", privilegeApi.Update)
 			privilegeRouters.GET("/delete", privilegeApi.Del)
+			privilegeRouters.GET("/toAssign", roleApi.ToAssign)
+			privilegeRouters.POST("/doAssign", roleApi.DoAssign)
 		}
 
 	}
