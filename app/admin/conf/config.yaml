@@ -15,6 +15,6 @@ redis:
   password: ""
   username: ""
 system:
-  env: prod
+  env: test
   addr: 9999
   token_expire: 604800

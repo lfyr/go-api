@@ -100,7 +100,7 @@ func (this *Role) ToAssign(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	data := user.NewPrivilegeService().GetPriByRoleId(map[string]interface{}{"role_id": param.RoleId}, []string{"pri_id"})
+	data := user.NewPrivilegeService().GetPriRoleByCond(map[string]interface{}{"role_id": param.RoleId}, []string{"pri_id"})
 	roleId := []int{}
 	if len(data) > 0 {
 		for _, datum := range data {

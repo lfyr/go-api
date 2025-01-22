@@ -21,14 +21,14 @@ func (r *PrivilegeService) Many(whereMap map[string]interface{}) (data []model.A
 	return
 }
 
-func (r *PrivilegeService) GetPriByRoleId(whereMap map[string]interface{}, fieldSlice []string) (data []model.AppRolePrivilege) {
+func (r *PrivilegeService) GetPriRoleByCond(whereMap map[string]interface{}, fieldSlice []string) (data []model.AppRolePrivilege) {
 	data = model.NewAppRolePrivilege().Many(whereMap, fieldSlice)
 	return
 }
 
 func (r *PrivilegeService) UpData(data model.AppPrivilege) (err error) {
 	upData := map[string]interface{}{
-		"role_name":   data.PriName,
+		"pri_name":    data.PriName,
 		"action_name": data.ActionName,
 		"parent_id":   data.ParentId,
 	}
@@ -36,7 +36,7 @@ func (r *PrivilegeService) UpData(data model.AppPrivilege) (err error) {
 	return
 }
 
-func (r *PrivilegeService) delData(id int) (err error) {
+func (r *PrivilegeService) DelData(id int) (err error) {
 	err = model.NewAppPrivilege().Delete(id)
 	return
 }

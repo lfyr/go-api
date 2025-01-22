@@ -109,3 +109,22 @@ type (
 		IsUse int `json:"is_use"`
 	}
 )
+
+type (
+	AddPrivilegeReq struct {
+		PriName    string `json:"pri_name" binding:"required"`
+		ActionName string `json:"action_name"`
+		Pid        int    `json:"pid"`
+	}
+
+	UpDatePrivilegeReq struct {
+		Id         int    `json:"id" binding:"required"`
+		PriName    string `json:"pri_name" binding:"required"`
+		ActionName string `json:"action_name"`
+		ParentId   int    `json:"parent_id"`
+	}
+
+	DelPrivilegeReq struct {
+		Id int `form:"id" binding:"required"`
+	}
+)
