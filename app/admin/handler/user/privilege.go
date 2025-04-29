@@ -78,20 +78,3 @@ func (this *Privilege) Del(c *gin.Context) {
 	utils.OkWithMessage(c, "删除成功")
 	return
 }
-
-//func getTree(data []model.AppPrivilege, pid int) (dataTree []PrivilegeTree) {
-//	for _, item := range data {
-//		if item.ParentId == pid {
-//			pri := PrivilegeTree{
-//				Id:         item.Id,
-//				PriName:    item.PriName,
-//				ActionName: item.ActionName,
-//				ParentId:   item.ParentId,
-//			}
-//			child := getTree(data, item.Id)
-//			pri.Children = child
-//			dataTree = append(dataTree, pri)
-//		}
-//	}
-//	return dataTree
-//}
