@@ -17,6 +17,12 @@ func (this *Goods) List(c *gin.Context) {
 	return
 }
 
-func (this *Goods) Create(c *gin.Context) {
+func (this *Goods) Add(c *gin.Context) {
+	param := AddGoodsReq{}
+	if err := c.ShouldBindJSON(&param); err != nil {
+		utils.FailWithDetailed(c, map[string]interface{}{}, "参数错误")
+		return
+	}
 	utils.OkWithDetailed(c, map[string]interface{}{}, "创建成功")
+	return
 }

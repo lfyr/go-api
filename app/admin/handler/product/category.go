@@ -17,7 +17,17 @@ func NewCategoryRoute() *Category {
 }
 
 func (this *Category) List(c *gin.Context) {
-	utils.OkWithDetailed(c, map[string]interface{}{}, "获取成功")
+	param := PageReq{}
+	err := c.ShouldBindQuery(&param)
+	if err != nil {
+		utils.FailWithMessage(c, err.Error())
+		return
+	}
+	list, count := product.NewCategoryService().List(map[string]interface{}{}, []string{}, 1, 10, []string{})
+	utils.OkWithDetailed(c, map[string]interface{}{
+		"list":  list,
+		"count": count,
+	}, "获取成功")
 	return
 }
 
@@ -56,7 +66,10 @@ func (this *Category) Update(c *gin.Context) {
 	}
 	if err := product.NewCategoryService().Update(data); err != nil {
 		utils.FailWithMessage(c, err.Error())
+		return
 	}
+	utils.OkWithMessage(c, "更新成功")
+	return
 }
 
 func (this *Category) Del(c *gin.Context) {

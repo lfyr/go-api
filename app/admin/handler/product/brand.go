@@ -16,7 +16,7 @@ func NewBrandRoute() *Brand {
 }
 
 func (this *Brand) List(c *gin.Context) {
-	param := GetBrandReq{}
+	param := PageReq{}
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())

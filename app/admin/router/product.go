@@ -26,5 +26,12 @@ func productRouter(routers *gin.RouterGroup) {
 			categoryRouters.POST("update", categoryApi.Update)
 			categoryRouters.GET("del", categoryApi.Del)
 		}
+
+		goodsApi := product.NewGoodsRoute()
+		goodsRouters := productRouters.Group("category")
+		{
+			goodsRouters.GET("list", goodsApi.List)
+			goodsRouters.POST("create", goodsApi.Add)
+		}
 	}
 }

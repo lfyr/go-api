@@ -4,14 +4,14 @@ type (
 	IdReq struct {
 		Id int `json:"id" form:"id" binding:"required"`
 	}
+	PageReq struct {
+		Page     int `form:"page" binding:"required"`
+		PageSize int `form:"pageSize" binding:"required"`
+	}
 )
 
 // User
 type (
-	GetBrandReq struct {
-		Page     int `form:"page" binding:"required"`
-		PageSize int `form:"pageSize" binding:"required"`
-	}
 	AddBrandReq struct {
 		BrandName string `json:"brandName" form:"brandName" binding:"required"`
 		Logo      string `json:"logo" form:"logo"`
@@ -25,12 +25,55 @@ type (
 
 type (
 	AddCategoryReq struct {
-		CatName  string `json:"cat_name" form:"cat_name" binding:"required"`
-		ParentId int    `json:"parent_id" form:"parent_id"`
+		CatName  string `json:"catName" form:"catName" binding:"required"`
+		ParentId int    `json:"parentId" form:"parentId"`
 	}
 	UpdateCategoryReq struct {
-		Id       int    `json:"id" form:"id"`
-		CatName  string `json:"cat_name" form:"cat_name" binding:"required"`
-		ParentId int    `json:"parent_id" form:"parent_id"`
+		Id       int    `json:"id" form:"id" binding:"required"`
+		CatName  string `json:"catName" form:"catName"`
+		ParentId int    `json:"parentId" form:"parentId"`
+	}
+)
+
+type (
+	AddGoodsReq struct {
+		GoodsName      string  `json:"goodsName"`
+		CatId          int     `json:"catId"`
+		BrandId        int     `json:"brandId"`
+		ShopPrice      float64 `json:"shopPrice"`
+		Logo           string  `json:"logo"`
+		SmLogo         string  `json:"smLogo"`
+		IsHot          int     `json:"isHot"`
+		IsNew          int     `json:"isNew"`
+		IsBest         int     `json:"isBest"`
+		IsOnSale       int     `json:"isOnSale"`
+		SeoKeyword     string  `json:"seoKeyWord"`
+		SeoDescription string  `json:"seoDescription"`
+		TypeId         int     `json:"typeId"`
+		SortNum        int     `json:"sortNum"`
+		IsDelete       int     `json:"isDelete"`
+		GoodsDesc      string  `json:"goodsDesc"`
+		Addtime        int     `json:"addtime"`
+	}
+
+	UpdateGoodsReq struct {
+		Id             int     `json:"id" form:"id" binding:"required"`
+		GoodsName      string  `json:"goodsName"`
+		CatId          int     `json:"catId"`
+		BrandId        int     `json:"brandId"`
+		ShopPrice      float64 `json:"shopPrice"`
+		Logo           string  `json:"logo"`
+		SmLogo         string  `json:"smLogo"`
+		IsHot          int     `json:"isHot"`
+		IsNew          int     `json:"isNew"`
+		IsBest         int     `json:"isBest"`
+		IsOnSale       int     `json:"isOnSale"`
+		SeoKeyword     string  `json:"seoKeyWord"`
+		SeoDescription string  `json:"seoDescription"`
+		TypeId         int     `json:"typeId"`
+		SortNum        int     `json:"sortNum"`
+		IsDelete       int     `json:"isDelete"`
+		GoodsDesc      string  `json:"goodsDesc"`
+		Addtime        int     `json:"addtime"`
 	}
 )

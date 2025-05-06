@@ -33,7 +33,7 @@ func NewAppGoods() *AppGoods {
 	return &AppGoods{}
 }
 
-func (this *AppGoods) Create(data *AppBrand, tx *gorm.DB) (err error) {
+func (this *AppGoods) Create(data *AppGoods, tx *gorm.DB) (id int, err error) {
 	err = tx.Model(this).Create(&data).Error
-	return
+	return data.Id, err
 }
