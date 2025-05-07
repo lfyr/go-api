@@ -15,6 +15,11 @@ func (this *CategoryService) List(whereMap map[string]interface{}, fieldSlice []
 	return
 }
 
+func (this *CategoryService) Many(whereMap map[string]interface{}) (data []model.AppCategory) {
+	data = model.NewAppCategory().Many(whereMap)
+	return
+}
+
 func (this *CategoryService) Create(data model.AppCategory) (err error) {
 	err = model.NewAppCategory().Create(&data)
 	return
@@ -34,5 +39,6 @@ func (this *CategoryService) Delete(id int) (err error) {
 		"delete_status": 1,
 	}
 	err = model.NewAppCategory().Update(map[string]interface{}{"id = ?": id}, upData)
+	err = model.NewAppCategory().Update(map[string]interface{}{"parent_id = ?": id}, upData)
 	return
 }

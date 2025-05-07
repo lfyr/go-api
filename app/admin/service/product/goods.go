@@ -1,7 +1,7 @@
 package product
 
 import (
-	"fmt"
+	"github.com/lfyr/go-api/app/admin/handler/product"
 	"github.com/lfyr/go-api/database/masterdb"
 	"github.com/lfyr/go-api/model"
 )
@@ -12,7 +12,7 @@ func NewGoodsService() *GoodsService {
 	return &GoodsService{}
 }
 
-func (this *GoodsService) CreateGoods(data model.AppGoods) (err error) {
+func (this *GoodsService) CreateGoods(data model.AppGoods, pics []product.GoodsPics) (err error) {
 	tx := masterdb.DB.Begin()
 	// 创建商品
 	gId, err := model.NewAppGoods().Create(&data, tx)
@@ -21,9 +21,23 @@ func (this *GoodsService) CreateGoods(data model.AppGoods) (err error) {
 		return
 	}
 
-	fmt.Println(gId)
-
 	// 创建商品图片
+	goodsPicsData := []model.AppGoodsPics{}
+	for _, v := range pics {
+		v.GoodsId = gId
+		tmp := model.AppGoodsPics{
+			Pic:      v.Pic,
+			SmPic:    v.SmPic,
+			GoodsId:  gId,
+			IsDelete: 0,
+		}
+		goodsPicsData = append(goodsPicsData, tmp)
+	}
+	err = model.NewAppGoodsPics().BatchCreate(&goodsPicsData, tx)
+	if err != nil {
+		tx.Rollback()
+		return
+	}
 
 	// 创建商品属性
 

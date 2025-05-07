@@ -17,17 +17,12 @@ func NewCategoryRoute() *Category {
 }
 
 func (this *Category) List(c *gin.Context) {
-	param := PageReq{}
-	err := c.ShouldBindQuery(&param)
-	if err != nil {
-		utils.FailWithMessage(c, err.Error())
-		return
+	data := product.NewCategoryService().Many(map[string]interface{}{})
+	rData := []CategoryTree{}
+	if len(data) > 0 {
+		rData = getTree(data, 0)
 	}
-	list, count := product.NewCategoryService().List(map[string]interface{}{}, []string{}, 1, 10, []string{})
-	utils.OkWithDetailed(c, map[string]interface{}{
-		"list":  list,
-		"count": count,
-	}, "获取成功")
+	utils.OkWithData(c, rData)
 	return
 }
 
@@ -85,4 +80,20 @@ func (this *Category) Del(c *gin.Context) {
 	}
 	utils.OkWithMessage(c, "删除成功")
 	return
+}
+
+func getTree(data []model.AppCategory, pid int) (dataTree []CategoryTree) {
+	for _, item := range data {
+		if item.ParentId == pid {
+			pri := CategoryTree{
+				Id:       item.Id,
+				CatName:  item.CatName,
+				ParentId: item.ParentId,
+			}
+			child := getTree(data, item.Id)
+			pri.Children = child
+			dataTree = append(dataTree, pri)
+		}
+	}
+	return dataTree
 }

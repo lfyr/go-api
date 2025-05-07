@@ -40,6 +40,17 @@ func (this *AppCategory) List(whereMap map[string]interface{}, fieldSlice []stri
 	return
 }
 
+func (this *AppCategory) Many(whereMap map[string]interface{}) (list []AppCategory) {
+	tx := masterdb.DB.Model(this)
+	if len(whereMap) > 0 {
+		for k, v := range whereMap {
+			tx = tx.Where(k, v)
+		}
+	}
+	tx.Find(&list)
+	return
+}
+
 func (this *AppCategory) Create(data *AppCategory) (err error) {
 	err = masterdb.DB.Model(this).Create(&data).Error
 	return

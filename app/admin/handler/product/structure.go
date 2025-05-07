@@ -33,27 +33,41 @@ type (
 		CatName  string `json:"catName" form:"catName"`
 		ParentId int    `json:"parentId" form:"parentId"`
 	}
+
+	CategoryTree struct {
+		Id       int            `json:"id"`
+		CatName  string         `json:"cat_name"`
+		ParentId int            `json:"parent_id"`
+		Children []CategoryTree `json:"children"`
+	}
 )
 
 type (
 	AddGoodsReq struct {
-		GoodsName      string  `json:"goodsName"`
-		CatId          int     `json:"catId"`
-		BrandId        int     `json:"brandId"`
-		ShopPrice      float64 `json:"shopPrice"`
-		Logo           string  `json:"logo"`
-		SmLogo         string  `json:"smLogo"`
-		IsHot          int     `json:"isHot"`
-		IsNew          int     `json:"isNew"`
-		IsBest         int     `json:"isBest"`
-		IsOnSale       int     `json:"isOnSale"`
-		SeoKeyword     string  `json:"seoKeyWord"`
-		SeoDescription string  `json:"seoDescription"`
-		TypeId         int     `json:"typeId"`
-		SortNum        int     `json:"sortNum"`
-		IsDelete       int     `json:"isDelete"`
-		GoodsDesc      string  `json:"goodsDesc"`
-		Addtime        int     `json:"addtime"`
+		GoodsName      string      `json:"goodsName"`
+		CatId          int         `json:"catId"`
+		BrandId        int         `json:"brandId"`
+		ShopPrice      float64     `json:"shopPrice"`
+		Logo           string      `json:"logo"`
+		SmLogo         string      `json:"smLogo"`
+		IsHot          int         `json:"isHot"`
+		IsNew          int         `json:"isNew"`
+		IsBest         int         `json:"isBest"`
+		IsOnSale       int         `json:"isOnSale"`
+		SeoKeyword     string      `json:"seoKeyWord"`
+		SeoDescription string      `json:"seoDescription"`
+		TypeId         int         `json:"typeId"`
+		SortNum        int         `json:"sortNum"`
+		IsDelete       int         `json:"isDelete"`
+		GoodsDesc      string      `json:"goodsDesc"`
+		Addtime        int         `json:"addtime"`
+		GoodsPicsData  []GoodsPics `json:"goods_pics"`
+	}
+
+	GoodsPics struct {
+		Pic     string `json:"pic"`
+		SmPic   string `json:"smPic"`
+		GoodsId int    `json:"goodsId"`
 	}
 
 	UpdateGoodsReq struct {
