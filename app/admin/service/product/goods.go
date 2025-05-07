@@ -1,7 +1,7 @@
 package product
 
 import (
-	"github.com/lfyr/go-api/app/admin/handler/product"
+	"github.com/lfyr/go-api/app/admin/handler/structure"
 	"github.com/lfyr/go-api/database/masterdb"
 	"github.com/lfyr/go-api/model"
 )
@@ -12,7 +12,7 @@ func NewGoodsService() *GoodsService {
 	return &GoodsService{}
 }
 
-func (this *GoodsService) CreateGoods(data model.AppGoods, pics []product.GoodsPics) (err error) {
+func (this *GoodsService) CreateGoods(data model.AppGoods, pics []structure.GoodsPics) (err error) {
 	tx := masterdb.DB.Begin()
 	// 创建商品
 	gId, err := model.NewAppGoods().Create(&data, tx)

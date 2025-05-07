@@ -1,4 +1,4 @@
-package product
+package structure
 
 type (
 	IdReq struct {

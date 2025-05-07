@@ -2,6 +2,7 @@ package product
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/lfyr/go-api/app/admin/handler/structure"
 	"github.com/lfyr/go-api/app/admin/service/product"
 	"github.com/lfyr/go-api/model"
 	"github.com/lfyr/go-api/utils"
@@ -21,7 +22,7 @@ func (this *Goods) List(c *gin.Context) {
 }
 
 func (this *Goods) Add(c *gin.Context) {
-	param := AddGoodsReq{}
+	param := structure.AddGoodsReq{}
 	if err := c.ShouldBindJSON(&param); err != nil {
 		utils.FailWithDetailed(c, map[string]interface{}{}, "参数错误")
 		return

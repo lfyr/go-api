@@ -2,6 +2,7 @@ package product
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/lfyr/go-api/app/admin/handler/structure"
 	"github.com/lfyr/go-api/app/admin/service/product"
 	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/model"
@@ -16,7 +17,7 @@ func NewBrandRoute() *Brand {
 }
 
 func (this *Brand) List(c *gin.Context) {
-	param := PageReq{}
+	param := structure.PageReq{}
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
@@ -35,7 +36,7 @@ func (this *Brand) List(c *gin.Context) {
 }
 
 func (this *Brand) Add(c *gin.Context) {
-	param := AddBrandReq{}
+	param := structure.AddBrandReq{}
 	err := c.ShouldBindJSON(&param)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
@@ -55,7 +56,7 @@ func (this *Brand) Add(c *gin.Context) {
 }
 
 func (this *Brand) Update(c *gin.Context) {
-	param := UpdateBrandReq{}
+	param := structure.UpdateBrandReq{}
 	err := c.ShouldBindJSON(&param)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())

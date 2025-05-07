@@ -2,6 +2,7 @@ package product
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/lfyr/go-api/app/admin/handler/structure"
 	"github.com/lfyr/go-api/app/admin/service/product"
 	"github.com/lfyr/go-api/config/global"
 	"github.com/lfyr/go-api/model"
@@ -18,7 +19,7 @@ func NewCategoryRoute() *Category {
 
 func (this *Category) List(c *gin.Context) {
 	data := product.NewCategoryService().Many(map[string]interface{}{})
-	rData := []CategoryTree{}
+	rData := []structure.CategoryTree{}
 	if len(data) > 0 {
 		rData = getTree(data, 0)
 	}
@@ -27,7 +28,7 @@ func (this *Category) List(c *gin.Context) {
 }
 
 func (this *Category) Add(c *gin.Context) {
-	param := AddCategoryReq{}
+	param := structure.AddCategoryReq{}
 	if err := c.ShouldBind(&param); err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
@@ -46,7 +47,7 @@ func (this *Category) Add(c *gin.Context) {
 }
 
 func (this *Category) Update(c *gin.Context) {
-	param := UpdateCategoryReq{}
+	param := structure.UpdateCategoryReq{}
 	if err := c.ShouldBind(&param); err != nil {
 		utils.FailWithMessage(c, err.Error())
 		return
@@ -82,10 +83,10 @@ func (this *Category) Del(c *gin.Context) {
 	return
 }
 
-func getTree(data []model.AppCategory, pid int) (dataTree []CategoryTree) {
+func getTree(data []model.AppCategory, pid int) (dataTree []structure.CategoryTree) {
 	for _, item := range data {
 		if item.ParentId == pid {
-			pri := CategoryTree{
+			pri := structure.CategoryTree{
 				Id:       item.Id,
 				CatName:  item.CatName,
 				ParentId: item.ParentId,
