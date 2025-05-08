@@ -27,7 +27,7 @@ func (this *AdminService) Update(data model.AppAdmin) (err error) {
 }
 
 func (this *AdminService) GetUserById(id int, withSlice []string) (user model.AppAdmin) {
-	user = model.NewAppAdmin().First(map[string]interface{}{"id": id}, withSlice)
+	user = model.NewAppAdmin().First(map[string]interface{}{"user_id": id}, withSlice)
 	return
 }
 

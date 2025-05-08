@@ -58,6 +58,7 @@ func (this *UserService) Login(userName, password string) (loginReq LoginReq, er
 	if user.Id > 0 {
 		admin := model.NewAppAdmin().First(map[string]interface{}{"user_id = ?": user.Id}, []string{})
 		if admin.Id > 0 && admin.IsUse == 1 {
+			user.Id = admin.UserId
 			loginReq.User = user
 			if utils.VerifyPassword(user.Password, password) {
 				tk, err := token.SetToken(user)

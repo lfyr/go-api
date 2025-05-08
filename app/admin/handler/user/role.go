@@ -150,6 +150,7 @@ func getTree(data []model.AppPrivilege, pid int) (dataTree []PrivilegeTree) {
 			pri := PrivilegeTree{
 				Id:         item.Id,
 				PriName:    item.PriName,
+				MenuName:   item.MenuName,
 				ActionName: item.ActionName,
 				ParentId:   item.ParentId,
 			}

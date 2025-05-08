@@ -9,6 +9,7 @@ type AppPrivilege struct {
 	global.Model
 	PriName    string `json:"pri_name"`
 	ActionName string `json:"action_name"`
+	MenuName   string `json:"menu_name"`
 	ParentId   int    `json:"parent_id"`
 }
 

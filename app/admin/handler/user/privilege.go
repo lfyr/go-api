@@ -30,7 +30,7 @@ func (this *Privilege) Add(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	data := model.AppPrivilege{PriName: param.PriName, ActionName: param.ActionName, ParentId: param.Pid}
+	data := model.AppPrivilege{PriName: param.PriName, MenuName: param.MenuName, ActionName: param.ActionName, ParentId: param.Pid}
 	err = user.NewPrivilegeService().Add(data)
 	if err != nil {
 		utils.FailWithMessage(c, err.Error())
@@ -47,7 +47,7 @@ func (this *Privilege) Update(c *gin.Context) {
 		utils.FailWithMessage(c, err.Error())
 		return
 	}
-	data := model.AppPrivilege{PriName: param.PriName, ActionName: param.ActionName, ParentId: param.ParentId}
+	data := model.AppPrivilege{PriName: param.PriName, MenuName: param.MenuName, ActionName: param.ActionName, ParentId: param.ParentId}
 	data.Id = param.Id
 	err = user.NewPrivilegeService().UpData(data)
 	if err != nil {

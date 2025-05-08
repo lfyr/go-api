@@ -36,7 +36,16 @@ func checkPrivilege(c *gin.Context) bool {
 	}
 
 	// 获取用户所有权限  先获取用户id->角色->权限 最后通过比对判断是否具有访问权限
+	menuList := []string{}
 	data := user.NewAdminService().GetUserById(userId, []string{"Role.AppRolePrivilege.AppPrivilege"})
+	for _, role := range data.Role {
+		for _, privilege := range role.AppRolePrivilege {
+			if len(privilege.AppPrivilege.MenuName) > 0 {
+				menuList = append(menuList, privilege.AppPrivilege.MenuName)
+			}
+		}
+	}
+	c.Set("menuList", menuList)
 	for _, role := range data.Role {
 		for _, privilege := range role.AppRolePrivilege {
 			if privilege.AppPrivilege.ActionName == path {

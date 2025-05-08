@@ -29,6 +29,7 @@ func (r *PrivilegeService) GetPriRoleByCond(whereMap map[string]interface{}, fie
 func (r *PrivilegeService) UpData(data model.AppPrivilege) (err error) {
 	upData := map[string]interface{}{
 		"pri_name":    data.PriName,
+		"menu_name":   data.MenuName,
 		"action_name": data.ActionName,
 		"parent_id":   data.ParentId,
 	}

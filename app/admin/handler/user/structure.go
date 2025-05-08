@@ -26,17 +26,18 @@ type (
 		Id int `form:"id" binding:"required"`
 	}
 	InfoReq struct {
-		Id       int    `json:"id"`
-		UserId   int    `json:"user_id"`
-		IsUse    int    `json:"is_use"`
-		UserName string `json:"user_name"`
-		Nickname string `json:"nickname"`
-		Password string `json:"password"`
-		Email    string `json:"email"`
-		Phone    string `json:"phone"`
-		Ip       string `json:"ip"`
-		Token    string `json:"token"`
-		Avatar   string `json:"avatar"`
+		Id       int         `json:"id"`
+		UserId   int         `json:"user_id"`
+		IsUse    int         `json:"is_use"`
+		UserName string      `json:"user_name"`
+		Nickname string      `json:"nickname"`
+		Password string      `json:"password"`
+		Email    string      `json:"email"`
+		Phone    string      `json:"phone"`
+		Ip       string      `json:"ip"`
+		Token    string      `json:"token"`
+		Avatar   string      `json:"avatar"`
+		Routes   interface{} `json:"routes"`
 	}
 )
 
@@ -74,6 +75,7 @@ type (
 		Id         int             `json:"id"`
 		PriName    string          `json:"pri_name"`
 		ActionName string          `json:"action_name"`
+		MenuName   string          `json:"menu_name"`
 		ParentId   int             `json:"parent_id"`
 		Children   []PrivilegeTree `json:"children"`
 	}
@@ -114,6 +116,7 @@ type (
 	AddPrivilegeReq struct {
 		PriName    string `json:"pri_name" binding:"required"`
 		ActionName string `json:"action_name"`
+		MenuName   string `json:"menu_name"`
 		Pid        int    `json:"pid"`
 	}
 
@@ -121,6 +124,7 @@ type (
 		Id         int    `json:"id" binding:"required"`
 		PriName    string `json:"pri_name" binding:"required"`
 		ActionName string `json:"action_name"`
+		MenuName   string `json:"menu_name"`
 		ParentId   int    `json:"parent_id"`
 	}
 

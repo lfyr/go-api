@@ -59,6 +59,7 @@ func (this *AdminRoute) List(c *gin.Context) {
 
 func (this *AdminRoute) Info(c *gin.Context) {
 	userId := token.GetUid(c)
+	menuList, _ := c.Get("menuList")
 	data := user.NewAdminService().GetUserById(userId, []string{"User"})
 	rData := InfoReq{
 		Id:       data.Id,
@@ -72,8 +73,8 @@ func (this *AdminRoute) Info(c *gin.Context) {
 		Ip:       data.User.Ip,
 		Token:    data.User.Token,
 		Avatar:   data.User.Avatar,
+		Routes:   menuList,
 	}
-
 	utils.OkWithData(c, rData)
 	return
 }
